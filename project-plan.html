@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Plan — 티커</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+:root{
+  --navy:#1c1b42; --gold:#f2a20c;
+  --bg:#f6f5f9; --card:#ffffff; --ink:#1c1b42; --ink-soft:#5d5c7a; --line:#e3e2ec;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard',-apple-system,'Malgun Gothic',sans-serif;color:var(--ink);background:var(--bg);line-height:1.7;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word}
+a{color:inherit}
+.shell{max-width:880px;margin:0 auto;padding:0 24px}
+
+/* ---------- cover ---------- */
+.cover{background:var(--navy);color:#fff;padding:90px 0 80px}
+.cover .tag{font-size:12px;font-weight:800;letter-spacing:.2em;color:var(--gold)}
+.cover h1{font-size:clamp(34px,6vw,56px);font-weight:800;letter-spacing:-.02em;line-height:1.2;margin:16px 0 10px}
+.cover .sub{font-size:17px;font-weight:600;color:rgba(255,255,255,.75)}
+.cover .lead{margin-top:36px;padding-top:24px;border-top:1px solid rgba(255,255,255,.15);font-size:20px;font-weight:700}
+.cover .lead em{font-style:normal;color:var(--gold)}
+
+/* ---------- sections ---------- */
+main{padding:60px 0 100px}
+.sec{background:var(--card);border-radius:18px;padding:44px 40px;margin-bottom:20px}
+.sec-no{font-size:13px;font-weight:800;letter-spacing:.14em;color:var(--gold)}
+.sec h2{font-size:26px;font-weight:800;letter-spacing:-.01em;margin:6px 0 24px}
+.sec p{font-size:15.5px;color:var(--ink-soft)}
+.sec p + p{margin-top:14px}
+
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.box{background:var(--bg);border-radius:12px;padding:22px 24px}
+.box h3{font-size:13px;font-weight:800;letter-spacing:.06em;color:var(--ink);margin-bottom:8px}
+.box p{font-size:15px}
+
+dl.spec{display:grid;grid-template-columns:140px 1fr;border-top:1px solid var(--line)}
+dl.spec dt,dl.spec dd{padding:18px 0;border-bottom:1px solid var(--line)}
+dl.spec dt{font-size:14px;font-weight:800}
+dl.spec dd{font-size:15px;color:var(--ink-soft)}
+.swatches{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.sw{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--ink);background:var(--bg);padding:6px 14px 6px 6px;border-radius:999px}
+.sw i{width:22px;height:22px;border-radius:50%;display:block}
+.menu{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.menu span{font-size:13.5px;font-weight:700;color:var(--ink);border:1px solid var(--line);padding:4px 14px;border-radius:999px}
+.ref + .ref{margin-top:14px}
+.ref strong{color:var(--ink)}
+
+table{width:100%;border-collapse:collapse;font-size:15px}
+th{font-size:12.5px;font-weight:800;letter-spacing:.06em;text-align:left;color:var(--ink-soft);padding:0 12px 12px 0;border-bottom:2px solid var(--navy)}
+td{padding:16px 12px 16px 0;border-bottom:1px solid var(--line);color:var(--ink-soft);vertical-align:top}
+td:first-child{font-weight:800;color:var(--ink);white-space:nowrap}
+.badge{display:inline-block;font-size:12px;font-weight:800;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.badge.must{background:var(--navy);color:#fff}
+.badge.opt{background:var(--bg);color:var(--ink-soft)}
+
+.screens{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;counter-reset:scr}
+.scr{background:var(--bg);border-radius:12px;padding:20px 22px;counter-increment:scr}
+.scr::before{content:counter(scr,decimal-leading-zero);display:block;font-size:12px;font-weight:800;color:var(--gold);margin-bottom:6px}
+.scr h3{font-size:16px;font-weight:800;margin-bottom:4px}
+.scr p{font-size:14px}
+
+.goal{background:var(--navy);color:#fff}
+.goal h2{color:#fff}
+.goal p{color:rgba(255,255,255,.8)}
+
+.note{border:2px dashed var(--gold);background:#fffaf0}
+.note li{list-style:none;font-size:15.5px;color:var(--ink-soft);padding-left:22px;position:relative}
+.note li::before{content:'';position:absolute;left:0;top:.65em;width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.note li strong{color:var(--ink)}
+
+footer{text-align:center;font-size:13px;color:var(--ink-soft);padding-bottom:60px}
+
+@media(max-width:700px){
+  .sec{padding:32px 22px}
+  .pair{grid-template-columns:1fr}
+  dl.spec{grid-template-columns:1fr}
+  dl.spec dt{padding-bottom:0;border-bottom:0}
+  table,thead,tbody,tr,td,th{display:block}
+  thead{display:none}
+  tr{padding:14px 0;border-bottom:1px solid var(--line)}
+  td{padding:2px 0;border:0}
+}
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="shell">
+    <div class="tag">PROJECT PLAN</div>
+    <h1>티커</h1>
+    <div class="sub">리빙팡팡 | 티커의 경제학</div>
+    <p class="lead">경제 이야기를 <em>글로도</em> 읽을 수 있는 공간</p>
+  </div>
+</header>
+
+<main>
+  <div class="shell">
+
+    <section class="sec">
+      <div class="sec-no">01</div>
+      <h2>기획 배경</h2>
+      <p>유튜브 채널을 1년 가까이 운영하면서 영상을 89개 만들었습니다. 그런데 영상은 유튜브에만 있고, 대본과 자료는 제 컴퓨터 폴더에 흩어져 있습니다. 채널을 소개할 곳도 유튜브 링크 하나뿐입니다.</p>
+      <p>영상은 검색으로 찾아오기 어렵지만 글은 검색에 걸립니다. 이미 써둔 대본을 글로 올려두면 새로 만들지 않아도 콘텐츠가 쌓이는 공간이 됩니다. 한 번 만들어두고 영상 올릴 때마다 같이 채워나가고 싶습니다.</p>
+    </section>
+
+    <section class="sec">
+      <div class="sec-no">02</div>
+      <h2>누가 보나요</h2>
+      <div class="pair">
+        <div class="box">
+          <h3>보는 사람</h3>
+          <p>채널을 처음 알게 되어 어떤 곳인지 궁금한 사람, 협찬이나 광고 문의를 하려는 업체</p>
+        </div>
+        <div class="box">
+          <h3>보여주고 싶은 것</h3>
+          <p>어떤 주제를 다루는 채널인지, 지금까지 어떤 내용을 다뤄왔는지</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-no">03</div>
+      <h2>디자인 방향</h2>
+      <dl class="spec">
+        <dt>사이트명 / 로고</dt>
+        <dd>티커 (채널 캐릭터 이름. 심플하게 텍스트로만)</dd>
+        <dt>메인 컬러</dt>
+        <dd>
+          <div class="swatches">
+            <span class="sw"><i style="background:#1c1b42"></i>진한 남보라 #1c1b42</span>
+            <span class="sw"><i style="background:#f2a20c"></i>포인트 금색 #f2a20c</span>
+          </div>
+          <p style="margin-top:8px;font-size:14px">포인트 색은 금색 한 가지만</p>
+        </dd>
+        <dt>메뉴 구성</dt>
+        <dd>
+          <div class="menu"><span>Home</span><span>About</span><span>Contents</span><span>Contact</span></div>
+          <p style="margin-top:8px;font-size:14px">4개, 심플하게</p>
+        </dd>
+        <dt>참고 사이트</dt>
+        <dd>
+          <p class="ref"><strong><a href="https://newneek.co" target="_blank" rel="noopener">뉴닉(newneek.co)</a></strong> — 캐릭터 하나로 브랜드를 만든 경제 콘텐츠 사이트. 캐릭터는 맨 위에 한 번만 쓰고 나머지는 글에 집중하게 하는 구조를 참고하고 싶습니다.</p>
+          <p class="ref"><strong><a href="https://longblack.co" target="_blank" rel="noopener">롱블랙(longblack.co)</a></strong> — 검정 배경에 포인트 색 하나로 갑니다. 어두운 색을 주조색으로 쓰는 사이트가 어떻게 안 답답한지 보실 수 있어요. 지금 남보라 쓰시려는 거랑 상황이 같습니다.</p>
+        </dd>
+      </dl>
+    </section>
+
+    <section class="sec">
+      <div class="sec-no">04</div>
+      <h2>핵심 기능</h2>
+      <table>
+        <thead><tr><th>기능</th><th>설명</th><th>우선순위</th></tr></thead>
+        <tbody>
+          <tr><td>채널 소개</td><td>어떤 채널인지, 어떤 주제를 다루는지 보여주는 영역</td><td><span class="badge must">필수</span></td></tr>
+          <tr><td>콘텐츠 목록</td><td>올린 글을 카드 형태로 쭉 보여주기</td><td><span class="badge must">필수</span></td></tr>
+          <tr><td>콘텐츠 상세</td><td>카드를 누르면 그 내용을 자세히 보여주고 영상 링크 연결</td><td><span class="badge must">필수</span></td></tr>
+          <tr><td>콘텐츠 등록·수정·삭제</td><td>로그인한 나만 새 글을 올리고 고칠 수 있게</td><td><span class="badge must">필수</span></td></tr>
+          <tr><td>추천 상품 모음</td><td>영상에서 소개한 살림 아이템을 모아두는 공간</td><td><span class="badge opt">미정</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="sec">
+      <div class="sec-no">05</div>
+      <h2>화면 구성</h2>
+      <div class="screens">
+        <div class="scr"><h3>메인</h3><p>채널 소개와 최근 콘텐츠가 함께 보이는 첫 화면</p></div>
+        <div class="scr"><h3>콘텐츠 목록</h3><p>올린 글을 카드로 쭉 보여주는 화면</p></div>
+        <div class="scr"><h3>콘텐츠 상세</h3><p>하나를 눌렀을 때 나오는 자세한 화면</p></div>
+        <div class="scr"><h3>콘텐츠 등록·수정</h3><p>새 글을 넣고 고치는 화면</p></div>
+        <div class="scr"><h3>로그인</h3><p>나만 등록할 수 있게 막아두는 화면</p></div>
+      </div>
+    </section>
+
+    <section class="sec goal">
+      <div class="sec-no">06</div>
+      <h2>얻고 싶은 것</h2>
+      <p>완벽하게 만드는 게 목표가 아니라, 제가 직접 기획하고 만든 화면이 실제로 인터넷에 떠 있는 걸 경험하는 게 목표입니다.</p>
+      <p>그리고 이 사이트가 나중에 다른 사람 홈페이지를 만들어줄 때 "제가 만든 겁니다"라고 보여줄 첫 번째 작업물이 되면 좋겠습니다.</p>
+    </section>
+
+    <section class="sec note">
+      <div class="sec-no">CHECK</div>
+      <h2>세 가지만 짚어둘게요</h2>
+      <ul>
+        <li><strong>사이트명은 정하셔야 합니다.</strong> "티커"로 써뒀는데 "리빙팡팡"도 후보입니다. 티커가 짧고 캐릭터 이름이라 기억하기 쉽고, 리빙팡팡은 채널 검색명이라 찾아오기 쉽습니다. 둘 중 하나로 정하시면 됩니다.</li>
+      </ul>
+    </section>
+
+  </div>
+</main>
+
+<footer>티커 — 리빙팡팡 | 티커의 경제학 · Project Plan</footer>
+
+</body>
+</html>
