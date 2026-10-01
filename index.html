@@ -4,40 +4,55 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>티커 — Portfolio</title>
+<meta name="description" content="리빙팡팡 | 티커의 경제학 — 증시·투자 이슈부터 살림 꿀템까지, 시간과 돈의 가치를 경제학적 시선으로 풀어드립니다.">
+<meta property="og:title" content="리빙팡팡 | 티커의 경제학">
+<meta property="og:description" content="증시·투자 이슈부터 살림 꿀템까지, 경제학적 시선으로 풀어드립니다.">
+<meta property="og:image" content="img/ticker-hero.jpeg">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
 <style>
 :root{
-  --bg:#f3f1ec; --ink:#161513; --ink-soft:#6b675f; --line:#e6e2d9; --card:#ffffff;
-  --pill-bg:#e9e5db; --accent:#161513;
+  --bg:#f4f2f7; --card:#ffffff; --ink:#1c1b42; --ink-soft:#5e5a72; --line:#e3dfea; --pill-bg:#e8e4f0;
+  --dark:#1c1b42; --on-dark:#f4f2f7; --gold:#f2a20c; --on-gold:#1c1b42;
   --content: 1360px; --gut:20px;
   --sp1:5px; --sp2:10px; --sp3:20px; --sp4:30px; --sp5:40px; --sp6:60px; --sp7:80px; --sp8:100px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
 body{font-family:'Pretendard',-apple-system,'Malgun Gothic',sans-serif;color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word}
+img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .shell{max-width:var(--content);margin:0 auto;padding:0 5%}
 
 .pill{display:inline-block;font-size:11.5px;font-weight:700;letter-spacing:.06em;background:var(--pill-bg);color:var(--ink-soft);padding:8px 18px;border-radius:999px;margin-bottom:var(--sp3)}
 .card{background:var(--card);border-radius:22px;box-shadow:0 2px 10px rgba(22,21,19,.05);padding:var(--sp5)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
-.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
-.reveal.in{opacity:1;transform:translateY(0)}
+/* JS가 켜졌을 때만 숨김 → JS가 없어도 내용은 보임 */
+.js .reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.js .reveal.in{opacity:1;transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .js .reveal{opacity:1;transform:none;transition:none}
+}
 
 /* ---------- header ---------- */
-header.site{position:sticky;top:0;z-index:50;background:rgba(243,241,236,.9);backdrop-filter:blur(8px)}
+header.site{position:sticky;top:0;z-index:50;background:var(--dark);color:var(--on-dark)}
 header.site .shell{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:78px}
 .logo{font-size:18px;font-weight:800}
+.logo span{color:var(--gold)}
 nav.main{display:flex;gap:var(--sp5)}
-nav.main a{font-size:14px;color:var(--ink-soft);font-weight:500}
-nav.main a:hover{color:var(--ink)}
-.cta-btn{display:inline-flex;align-items:center;gap:8px;background:var(--ink);color:#fff;font-size:13px;font-weight:700;padding:12px 20px;border-radius:999px;justify-self:end}
+nav.main a{font-size:14px;color:var(--on-dark);opacity:.7;font-weight:500;white-space:nowrap}
+nav.main a:hover{opacity:1;color:var(--gold)}
+.cta-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--on-gold);font-size:13px;font-weight:700;padding:12px 20px;border-radius:999px;justify-self:end;white-space:nowrap}
 
 /* ---------- hero ---------- */
 .hero{padding:var(--sp6) 0 var(--sp7);text-align:center}
-.hero h1{font-size:clamp(30px,4.4vw,48px);font-weight:800;letter-spacing:-.02em;line-height:1.3;max-width:760px;margin:0 auto var(--sp4)}
-.hero .cta-row{display:flex;gap:var(--sp2);justify-content:center}
+.hero h1{font-size:clamp(30px,4.4vw,48px);font-weight:800;letter-spacing:-.02em;line-height:1.3;max-width:760px;margin:0 auto var(--sp3)}
+.hero p{font-size:15px;color:var(--ink-soft);max-width:480px;margin:0 auto var(--sp5)}
+.hero .cta-row{display:flex;flex-wrap:wrap;gap:var(--sp2);justify-content:center}
 .btn{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;padding:13px 24px;border-radius:999px}
+.btn-gold{background:var(--gold);color:var(--on-gold)}
 .btn-dark{background:var(--ink);color:#fff}
 .btn-ghost{background:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(22,21,19,.06)}
 
@@ -47,58 +62,91 @@ nav.main a:hover{color:var(--ink)}
 .sec-center h2{font-size:clamp(26px,3.4vw,36px);font-weight:800;letter-spacing:-.01em}
 .bento{display:grid;grid-template-columns:repeat(12,1fr);gap:var(--gut)}
 
-.b-about-copy{grid-column:span 12}
+.b-why{grid-column:span 12;padding:var(--sp7) var(--sp6)}
+.b-why h2{font-size:clamp(30px,4.4vw,48px);font-weight:800;letter-spacing:-.02em;line-height:1.3;color:var(--ink-soft);margin-bottom:var(--sp4)}
+.b-why h2 strong{display:block;color:var(--gold)}
+.b-why p{font-size:15.5px;color:var(--ink-soft);max-width:560px}
+
+.b-about-photo{grid-column:span 4;aspect-ratio:4/5;padding:0;overflow:hidden;background:var(--dark)}
+.b-about-photo img{width:100%;height:100%;object-fit:cover;object-position:center 15%}
+.b-about-copy{grid-column:span 8;display:flex;flex-direction:column;justify-content:center}
+.b-about-copy h3{font-size:24px;font-weight:800;line-height:1.4;margin-bottom:var(--sp3)}
 .b-about-copy p{font-size:15.5px;color:var(--ink-soft);max-width:720px}
 .b-about-copy p + p{margin-top:var(--sp3)}
 
-.b-why{grid-column:span 12;padding:var(--sp7) var(--sp6)}
-.b-why h2{font-size:clamp(30px,4.4vw,48px);font-weight:800;letter-spacing:-.02em;line-height:1.3;color:var(--ink-soft);margin-bottom:var(--sp4)}
-.b-why h2 strong{display:block;color:var(--ink)}
-.b-why p{font-size:15.5px;color:var(--ink-soft);max-width:560px}
-
 .what-note{font-size:15px;color:var(--ink-soft);max-width:520px;margin:var(--sp2) auto 0}
 .b-what{grid-column:span 4}
-.b-what .k{font-size:11.5px;font-weight:800;letter-spacing:.12em;color:var(--ink-soft);margin-bottom:var(--sp2)}
+.b-what .k{font-size:11.5px;font-weight:800;letter-spacing:.12em;color:var(--gold);margin-bottom:var(--sp2)}
 .b-what h3{font-size:19px;font-weight:800;margin-bottom:var(--sp2)}
 .b-what p{font-size:14px;color:var(--ink-soft)}
 
 .b-when{grid-column:span 12}
 .day-row{display:grid;grid-template-columns:repeat(7,1fr);gap:var(--sp2);margin-bottom:var(--sp4)}
 .day{display:flex;align-items:center;justify-content:center;aspect-ratio:1/1;max-height:72px;border-radius:14px;border:1px solid var(--line);background:var(--bg);font-size:15px;font-weight:500;color:var(--ink-soft)}
-.day.on{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:800}
+.day.on{background:var(--gold);border-color:var(--gold);color:var(--on-gold);font-weight:800}
 .when-note{font-size:14.5px;color:var(--ink-soft)}
 
-.b-proj-empty{grid-column:span 12;text-align:center;padding:var(--sp8) var(--sp5)}
-.b-proj-empty h3{font-size:22px;font-weight:800}
+.b-proj{grid-column:span 4;padding:0;overflow:hidden;display:flex;flex-direction:column}
+.b-proj .pimg{aspect-ratio:16/9;overflow:hidden;background:var(--dark);color:var(--on-dark);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;letter-spacing:.12em}
+.b-proj .pimg img{width:100%;height:100%;object-fit:cover}
+.b-proj .pbody{padding:var(--sp4);display:flex;flex-direction:column;flex:1}
+.b-proj .pcat{font-size:11.5px;font-weight:700;color:var(--ink-soft)}
+.b-proj h3{font-size:17px;font-weight:800;margin:6px 0 8px}
+.b-proj p{font-size:13px;color:var(--ink-soft)}
+.proj-foot{display:flex;justify-content:flex-end;margin-top:auto;padding-top:var(--sp3)}
+.arrow-circ{width:34px;height:34px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;transition:background .2s}
+.b-proj:hover .arrow-circ{background:var(--gold);color:var(--on-gold)}
 
-.b-contact-copy{grid-column:1/span 5;display:flex;flex-direction:column;justify-content:center}
+.b-contact-copy{grid-column:span 5;display:flex;flex-direction:column;justify-content:center;align-items:flex-start}
 .b-contact-copy h3{font-size:26px;font-weight:800;line-height:1.4;margin-bottom:var(--sp3)}
 .b-contact-copy p{font-size:14.5px;color:var(--ink-soft)}
-.b-contact-mail{grid-column:6/span 7;display:flex;align-items:center}
+.b-contact-mail{grid-column:span 7;display:flex;align-items:center}
 .mail-box{width:100%;display:flex;align-items:center;justify-content:space-between;gap:var(--sp3);border:1px solid var(--line);border-radius:16px;background:var(--bg);padding:var(--sp3) var(--sp3) var(--sp3) var(--sp4)}
 .mail-box a{font-size:17px;font-weight:700;overflow-wrap:anywhere}
+.mail-box a:hover{color:var(--gold)}
 .mail-box .btn{border:0;cursor:pointer;font-family:inherit;flex-shrink:0}
 
 /* ---------- footer ---------- */
 footer.site{padding:var(--sp2) 0 var(--sp7)}
-footer.site .shell{background:var(--card);border-radius:22px;display:flex;align-items:center;justify-content:space-between;padding:var(--sp4) var(--sp5)}
+.fbar{background:var(--dark);color:var(--on-dark);border-radius:22px;padding:var(--sp4) var(--sp5)}
 .fbrand{font-size:14px;font-weight:800;margin-bottom:var(--sp2)}
-.fnote{font-size:13px;color:var(--ink-soft);line-height:1.7}
+.fnote{font-size:13px;opacity:.7;line-height:1.7}
 
 @media(max-width:960px){
-  nav.main{display:none}
-  header.site .shell{grid-template-columns:1fr auto}
+  header.site .shell{grid-template-columns:1fr auto;height:auto;padding-top:var(--sp3);row-gap:var(--sp2)}
+  nav.main{grid-column:1/-1;grid-row:2;gap:var(--sp4);overflow-x:auto;padding-bottom:var(--sp3);scrollbar-width:none}
+  nav.main::-webkit-scrollbar{display:none}
+  .b-about-photo{grid-column:span 6}
+  .b-about-copy{grid-column:span 6}
+  .b-proj{grid-column:span 6}
   .b-contact-copy,.b-contact-mail,.b-what{grid-column:1/-1}
   .b-why{padding:var(--sp5)}
 }
+@media(max-width:600px){
+  .card{padding:24px}
+  .b-why{padding:var(--sp4) 24px}
+  .b-about-photo,.b-about-copy,.b-proj{grid-column:1/-1}
+  .b-about-photo{padding:0;aspect-ratio:1/1}
+  .b-proj{padding:0}
+  .b-proj .pbody{padding:24px}
+  .sec{padding:var(--sp6) 0}
+  .sec-center{margin-bottom:var(--sp5)}
+  .day-row{gap:6px}
+  .day{border-radius:10px;font-size:14px}
+  .mail-box{flex-direction:column;align-items:stretch;text-align:center;padding:var(--sp3)}
+  .mail-box .btn{justify-content:center}
+  .fbar{padding:24px}
+}
 </style>
+<script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
 
 <header class="site">
   <div class="shell">
-    <div class="logo"></div>
-    <nav class="main">
+    <a href="#" class="logo">티커<span>.</span></a>
+    <nav class="main" aria-label="주요 메뉴">
+      <a href="#why">WHY</a>
       <a href="#about">소개</a>
       <a href="#what">콘텐츠</a>
       <a href="#when">업로드 일정</a>
@@ -109,12 +157,14 @@ footer.site .shell{background:var(--card);border-radius:22px;display:flex;align-
   </div>
 </header>
 
+<main>
 <section class="hero">
   <div class="shell">
     <span class="pill">PORTFOLIO</span>
     <h1>리빙팡팡 | 티커의 경제학</h1>
+    <p>증시 이슈부터 살림 꿀템까지, 시간과 돈의 가치를 경제학적 시선으로 풀어드리는 채널입니다.</p>
     <div class="cta-row">
-      <a href="#project" class="btn btn-dark">포트폴리오 보기 →</a>
+      <a href="#project" class="btn btn-gold">포트폴리오 보기 →</a>
       <a href="#about" class="btn btn-ghost">소개 더 보기</a>
     </div>
   </div>
@@ -139,7 +189,11 @@ footer.site .shell{background:var(--card);border-radius:22px;display:flex;align-
       <h2>티커, 라는 조언자</h2>
     </div>
     <div class="bento">
+      <div class="card b-about-photo reveal">
+        <img src="img/ticker-hero.jpeg" alt="정장을 입고 손을 흔드는 채널 캐릭터 티커">
+      </div>
       <div class="card b-about-copy reveal">
+        <h3>시장을 읽는 눈으로<br>장바구니까지 봅니다</h3>
         <p>종목 코드를 뜻하는 티커에서 이름을 가져왔습니다. 시장을 읽는 눈으로 장바구니까지 본다는 뜻이기도 합니다.</p>
         <p>실질적인 자산 지키기부터 매일의 똑똑한 살림까지, 티커와 함께 풍요로운 일상을 만들어 보세요.</p>
       </div>
@@ -182,14 +236,14 @@ footer.site .shell{background:var(--card);border-radius:22px;display:flex;align-
     </div>
     <div class="bento">
       <div class="card b-when reveal">
-        <div class="day-row">
-          <span class="day">월</span>
-          <span class="day on">화</span>
-          <span class="day">수</span>
-          <span class="day on">목</span>
-          <span class="day">금</span>
-          <span class="day on">토</span>
-          <span class="day on">일</span>
+        <div class="day-row" role="list" aria-label="요일별 업로드 여부">
+          <span class="day" role="listitem">월</span>
+          <span class="day on" role="listitem">화<span class="sr-only"> 업로드</span></span>
+          <span class="day" role="listitem">수</span>
+          <span class="day on" role="listitem">목<span class="sr-only"> 업로드</span></span>
+          <span class="day" role="listitem">금</span>
+          <span class="day on" role="listitem">토<span class="sr-only"> 업로드</span></span>
+          <span class="day on" role="listitem">일<span class="sr-only"> 업로드</span></span>
         </div>
         <p class="when-note">화 · 목 · 토 · 일 업로드. 시장에 큰 이슈가 생기면 그날 바로 올라갑니다.</p>
       </div>
@@ -203,37 +257,63 @@ footer.site .shell{background:var(--card);border-radius:22px;display:flex;align-
       <span class="pill">PORTFOLIO</span>
       <h2>주요 프로젝트</h2>
     </div>
+    <!-- TODO: 대표 영상 3개로 교체 — href에 영상 링크, .pimg 안에 <img src="img/project-1.jpg" alt="..."> 썸네일, 제목·설명 수정 -->
     <div class="bento">
-      <div class="card b-proj-empty reveal">
-        <h3>프로젝트 준비 중</h3>
-      </div>
+      <a href="#" class="card b-proj reveal">
+        <div class="pimg">KOSPI</div>
+        <div class="pbody">
+          <span class="pcat">증시 &amp; 주식 분석</span>
+          <h3>대표 영상 제목을 입력하세요</h3>
+          <p>영상 내용을 한두 줄로 요약해 주세요.</p>
+          <div class="proj-foot"><span class="arrow-circ" aria-hidden="true">→</span></div>
+        </div>
+      </a>
+      <a href="#" class="card b-proj reveal">
+        <div class="pimg">HOME</div>
+        <div class="pbody">
+          <span class="pcat">살림 꿀템 리뷰</span>
+          <h3>대표 영상 제목을 입력하세요</h3>
+          <p>영상 내용을 한두 줄로 요약해 주세요.</p>
+          <div class="proj-foot"><span class="arrow-circ" aria-hidden="true">→</span></div>
+        </div>
+      </a>
+      <a href="#" class="card b-proj reveal">
+        <div class="pimg">SAVE</div>
+        <div class="pbody">
+          <span class="pcat">합리적 소비 팁</span>
+          <h3>대표 영상 제목을 입력하세요</h3>
+          <p>영상 내용을 한두 줄로 요약해 주세요.</p>
+          <div class="proj-foot"><span class="arrow-circ" aria-hidden="true">→</span></div>
+        </div>
+      </a>
     </div>
   </div>
 </section>
 
 <section class="sec" id="contact">
   <div class="shell">
-    <div class="card">
+    <div class="card reveal">
       <div class="bento">
         <div class="b-contact-copy">
-          <span class="pill" style="align-self:flex-start">CONTACT</span>
+          <span class="pill">CONTACT</span>
           <h3>비즈니스 · 협찬 문의</h3>
           <p>제품 리뷰, 협업, 광고 문의는 아래 메일로 보내주세요.</p>
         </div>
         <div class="b-contact-mail">
           <div class="mail-box">
             <a href="mailto:kdyshs343@gmail.com" id="mail-addr">kdyshs343@gmail.com</a>
-            <button type="button" class="btn btn-dark" id="copy-mail">주소 복사</button>
+            <button type="button" class="btn btn-gold" id="copy-mail">주소 복사</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+</main>
 
 <footer class="site">
   <div class="shell">
-    <div>
+    <div class="fbar">
       <div class="fbrand">리빙팡팡 | 티커의 경제학</div>
       <p class="fnote">일부 영상에는 쿠팡 파트너스 등 제휴 마케팅 링크가 포함될 수 있으며, 이에 따른 일정액의 수수료를 제공받습니다.<br>영상에서 다루는 내용은 정보 제공을 목적으로 하며 투자 권유가 아닙니다. 투자 판단과 그 결과의 책임은 투자자 본인에게 있습니다.</p>
     </div>
@@ -242,17 +322,26 @@ footer.site .shell{background:var(--card);border-radius:22px;display:flex;align-
 
 <script>
 const els = document.querySelectorAll('.reveal');
-const io = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-}, {threshold:0.12});
-els.forEach(el=>io.observe(el));
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.12});
+  els.forEach(el=>io.observe(el));
+} else {
+  els.forEach(el=>el.classList.add('in'));
+}
 
 const copyBtn = document.getElementById('copy-mail');
+const mail = document.getElementById('mail-addr').textContent;
+function flash(msg){
+  copyBtn.textContent = msg;
+  setTimeout(()=>{ copyBtn.textContent = '주소 복사'; }, 1500);
+}
 copyBtn.addEventListener('click', ()=>{
-  navigator.clipboard.writeText(document.getElementById('mail-addr').textContent).then(()=>{
-    copyBtn.textContent = '복사됨 ✓';
-    setTimeout(()=>{ copyBtn.textContent = '주소 복사'; }, 1500);
-  });
+  if (!navigator.clipboard) { window.location.href = 'mailto:' + mail; return; }
+  navigator.clipboard.writeText(mail)
+    .then(()=>flash('복사됨 ✓'))
+    .catch(()=>flash('복사 실패 — 직접 선택해 주세요'));
 });
 </script>
 
