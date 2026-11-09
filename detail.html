@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>콘텐츠 — 티커</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="site.css">
+<script>try{if(localStorage.getItem('theme')==='light')document.documentElement.dataset.theme='light';}catch(e){}</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="shell">
+    <a href="home.html" class="logo">리빙팡팡 | 티커의 경제학</a>
+    <div class="head-right">
+      <nav class="main">
+        <a href="home.html">Home</a>
+        <a href="home.html#about">About</a>
+        <a href="contents.html" class="on">Contents</a>
+        <a href="home.html#contact">Contact</a>
+      </nav>
+      <button type="button" class="theme-toggle" id="theme-toggle" role="switch" aria-checked="false" aria-label="화이트 모드" title="화이트 모드"><span class="ico moon" aria-hidden="true">네이비</span><span class="track"><span class="knob"></span></span><span class="ico sun" aria-hidden="true">화이트</span></button>
+      <a href="login.html" class="btn btn-line btn-sm">로그인</a>
+    </div>
+  </div>
+</header>
+
+<main class="page-top">
+  <div class="shell">
+    <article class="article" id="article">
+      <a href="contents.html" class="back">← 콘텐츠 목록</a>
+    </article>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="shell">
+    <div class="fbrand">리빙팡팡 | 티커의 경제학</div>
+    <p class="fnote">영상은 정보 제공용이며 투자 권유가 아닙니다. 제도·금리·세율은 영상 게시 시점 기준이니 신청·계약 전에 공식 안내를 확인해 주세요.</p>
+  </div>
+</footer>
+
+<script src="data/videos.js"></script>
+<script src="data/scripts.js"></script>
+<script src="site.js"></script>
+<script>
+const article = document.getElementById('article');
+const id = new URLSearchParams(location.search).get('v');
+const idx = VIDEOS.findIndex(v => v.id === id);
+
+if(idx < 0){
+  article.append(el('h1',null,'글을 찾을 수 없습니다'), el('p','empty','주소가 바뀌었거나 삭제된 글입니다. 목록에서 다시 골라 주세요.'));
+} else {
+  const v = VIDEOS[idx];
+  document.title = v.title + ' — 티커';
+
+  const meta = el('div','meta');
+  const time = el('time',null,fmtDate(v.date));
+  time.dateTime = v.date;
+  meta.append(el('span','cat',CATS[v.cat].label), time, el('span',null,'영상 ' + fmtLen(v.sec)));
+  article.append(meta, el('h1',null,v.title));
+
+  article.append(videoPlayer(v));
+
+  const cta = el('div','cta-row');
+  const yt = el('a','btn btn-gold','유튜브에서 보기 ↗');
+  yt.href = watchUrl(v.id); yt.target = '_blank'; yt.rel = 'noopener';
+  cta.append(yt);
+  article.append(cta);
+
+  /* 영상 설명에서 목차(0:00)와 그 뒤 안내 문구를 뽑아 둡니다 */
+  const toc = [], noticeLines = [];
+  let afterChapters = false;
+  v.desc.split('\n').forEach(raw=>{
+    const line = raw.trim();
+    if(!line) return;
+    const ch = line.match(/^((?:\d{1,2}:)?\d{1,2}:\d{2})\s+(.+)$/);
+    if(ch){ toc.push({time:ch[1], sec:ch[1].split(':').reduce((s,n)=> s*60 + Number(n), 0), title:ch[2]}); afterChapters = true; return; }
+    if(afterChapters) noticeLines.push(line);
+  });
+  const notice = el('div','notice');
+  noticeLines.forEach(line => notice.append(el('p',null,line)));
+
+  const script = (typeof SCRIPTS !== 'undefined') && SCRIPTS[v.id];
+  if(script){
+    /* 본문: 영상 대본을 장별로 — 장 제목의 시간을 누르면 유튜브 그 지점부터 재생 */
+    const prose = el('div','prose script');
+    const head = el('div','script-head');
+    head.append(el('div','eyebrow','SCRIPT'), el('h2',null,'영상 대본'));
+    prose.append(head);
+    script.forEach(([n, paras], i)=>{
+      const t = toc.find(c => n === 0 ? c.sec === 0 : c.title.startsWith(n + '장')) || toc[i];
+      const h = el('h3');
+      if(t){
+        const a = el('a',null,t.time);
+        a.href = watchUrl(v.id, t.sec); a.target = '_blank'; a.rel = 'noopener';
+        h.append(a, el('span',null,t.title));
+      } else h.append(el('span',null, n === 0 ? '인트로' : n + '장'));
+      prose.append(h);
+      paras.forEach(p => prose.append(el('p',null,p)));
+    });
+    article.append(prose);
+  } else {
+    /* 대본이 없는 영상: 영상 설명을 문단 · 핵심 정리(•) · 목차(0:00)로 나눠 보여줍니다 */
+    const prose = el('div','prose');
+    let ul = null, chapters = null, done = false;
+    v.desc.split('\n').forEach(raw=>{
+      const line = raw.trim();
+      if(done) return;
+      if(!line){ ul = null; return; }
+      const ch = line.match(/^((?:\d{1,2}:)?\d{1,2}:\d{2})\s+(.+)$/);
+      if(ch){
+        if(!chapters){ prose.append(el('h2',null,'영상 목차')); chapters = el('div','chapters'); prose.append(chapters); }
+        const a = el('a');
+        a.href = watchUrl(v.id, ch[1].split(':').reduce((s,n)=> s*60 + Number(n), 0)); a.target = '_blank'; a.rel = 'noopener';
+        a.append(el('time',null,ch[1]), el('span',null,ch[2]));
+        chapters.append(a);
+        ul = null;
+        return;
+      }
+      if(chapters){ done = true; return; }
+      const b = line.match(/^[•·]\s*(.+)$/);
+      if(b){
+        if(!ul){ ul = el('ul'); prose.append(ul); }
+        ul.append(el('li',null,b[1]));
+        return;
+      }
+      ul = null;
+      prose.append(el('p',null,line));
+    });
+    article.append(prose);
+  }
+
+  /* 해시태그 — 본문(대본 마지막 인사) 바로 다음. videos.js의 tags 배열 (유튜브 태그와 같게) */
+  if(v.tags && v.tags.length){
+    const tags = el('ul','tags');
+    tags.setAttribute('aria-label','해시태그');
+    v.tags.forEach(t => {
+      const a = el('a',null,'#' + t);
+      a.href = CHANNEL_URL + '/search?query=' + encodeURIComponent(t); /* 내 채널 안에서만 검색 */
+      a.target = '_blank'; a.rel = 'noopener';
+      const li = el('li'); li.append(a);
+      tags.append(li);
+    });
+    article.append(tags);
+  }
+  article.append(subscribeBox());
+  if(notice.children.length) article.append(notice);
+
+  /* 이전 · 다음 글 (목록은 최신순) */
+  const pager = el('nav','pager');
+  const older = VIDEOS[idx+1], newer = VIDEOS[idx-1];
+  if(older){
+    const a = el('a','prev'); a.href = 'detail.html?v=' + encodeURIComponent(older.id);
+    a.append(el('small',null,'← 이전 글'), el('strong',null,older.title));
+    pager.append(a);
+  }
+  if(newer){
+    const a = el('a','next'); a.href = 'detail.html?v=' + encodeURIComponent(newer.id);
+    a.append(el('small',null,'다음 글 →'), el('strong',null,newer.title));
+    pager.append(a);
+  }
+  article.append(pager);
+}
+</script>
+
+</body>
+</html>

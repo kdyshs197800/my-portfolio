@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>홍길동 — Skill</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+:root{
+  --cream:#f3ece2; --ink:#171512; --gold:#b5893f; --gold-soft:#c9a76b;
+  --dark:#141210; --line:rgba(23,21,18,.14);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Pretendard',-apple-system,'Malgun Gothic',sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;word-break:keep-all}
+.shell{max-width:1320px;margin:0 auto;padding:0 5%}
+
+/* ---------- section shells ---------- */
+.sec-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.sec-head .lbl{font-size:12px;font-weight:800;letter-spacing:.2em;color:var(--gold-soft)}
+
+/* ---------- skill (standalone) ---------- */
+.skill-sec{padding:40px 0 120px}
+.skill-top{display:grid;grid-template-columns:1fr 1.3fr;gap:60px;align-items:end;padding-bottom:36px;border-bottom:2px solid var(--ink)}
+.skill-top h2{font-size:30px;font-weight:800;line-height:1.35}
+.skill-top p{font-size:14px;color:#5c574e;max-width:420px}
+.skill-grid{display:grid;grid-template-columns:repeat(3,1fr);column-gap:60px}
+.skill-card{padding:28px 0;border-bottom:1px solid var(--line)}
+.skill-card .k{display:flex;justify-content:space-between;font-size:11px;font-weight:800;letter-spacing:.2em;color:var(--gold);margin-bottom:12px}
+.skill-card .k .no{color:var(--gold-soft)}
+.skill-card .v{font-size:22px;font-weight:800;letter-spacing:-.01em;margin-bottom:8px}
+.skill-card .d{font-size:13px;color:#6b6154}
+.skill-card .bd{display:inline-block;margin-top:14px;font-size:11px;font-weight:800;color:var(--dark);background:var(--gold-soft);padding:4px 10px;border-radius:2px;letter-spacing:.04em}
+
+@media(max-width:960px){
+  .skill-top{grid-template-columns:1fr;gap:16px}
+  .skill-grid{grid-template-columns:repeat(2,1fr);column-gap:30px}
+}
+</style>
+</head>
+<body>
+
+<section class="skill-sec">
+  <div class="shell">
+    <div class="sec-head"><div class="lbl">SKILL</div></div>
+    <div class="skill-top">
+      <h2>기획부터 배포까지<br>직접 다뤄본 도구들</h2>
+      <p>수업과 프로젝트에서 실제로 써본 기술만 적었습니다. 화면을 만들고, 데이터를 연결하고, 버전을 관리하는 흐름을 혼자 끝까지 이어갈 수 있습니다.</p>
+    </div>
+    <div class="skill-grid">
+      <div class="skill-card">
+        <div class="k"><span>FRONTEND</span><span class="no">01</span></div>
+        <div class="v">HTML / CSS</div>
+        <div class="d">시맨틱 마크업과 grid·flex 레이아웃으로 화면을 구성합니다.</div>
+        <span class="bd">무드보드 갤러리</span>
+      </div>
+      <div class="skill-card">
+        <div class="k"><span>FRONTEND</span><span class="no">02</span></div>
+        <div class="v">JavaScript</div>
+        <div class="d">DOM 조작과 이벤트 처리로 화면에 동작을 붙입니다.</div>
+        <span class="bd">오늘의 할일 앱</span>
+      </div>
+      <div class="skill-card">
+        <div class="k"><span>VERSION CONTROL</span><span class="no">03</span></div>
+        <div class="v">Git · GitHub</div>
+        <div class="d">브랜치로 작업을 나누고, push 충돌을 직접 해결해 봤습니다.</div>
+        <span class="bd">팀 일정 공유 페이지</span>
+      </div>
+      <div class="skill-card">
+        <div class="k"><span>BACKEND</span><span class="no">04</span></div>
+        <div class="v">Supabase</div>
+        <div class="d">데이터베이스를 연결해 글을 저장하고 불러오는 기능을 만듭니다.</div>
+        <span class="bd">오늘의 할일 앱</span>
+      </div>
+      <div class="skill-card">
+        <div class="k"><span>WORKFLOW</span><span class="no">05</span></div>
+        <div class="v">Claude Code</div>
+        <div class="d">바이브코딩으로 시안을 빠르게 만들고 반복해서 다듬습니다.</div>
+        <span class="bd">포트폴리오 사이트</span>
+      </div>
+      <div class="skill-card">
+        <div class="k"><span>DESIGN</span><span class="no">06</span></div>
+        <div class="v">반응형 레이아웃</div>
+        <div class="d">PC와 모바일에서 모두 읽기 편한 화면을 설계합니다.</div>
+        <span class="bd">전 프로젝트 공통</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

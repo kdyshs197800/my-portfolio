@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>로그인 — 티커</title>
+<meta name="description" content="리빙팡팡 | 티커의 경제학 운영자 로그인">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="site.css">
+<script>try{if(localStorage.getItem('theme')==='light')document.documentElement.dataset.theme='light';}catch(e){}</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="shell">
+    <a href="home.html" class="logo">리빙팡팡 | 티커의 경제학</a>
+    <div class="head-right">
+      <nav class="main">
+        <a href="home.html">Home</a>
+        <a href="home.html#about">About</a>
+        <a href="contents.html">Contents</a>
+        <a href="home.html#contact">Contact</a>
+      </nav>
+      <button type="button" class="theme-toggle" id="theme-toggle" role="switch" aria-checked="false" aria-label="화이트 모드" title="화이트 모드"><span class="ico moon" aria-hidden="true">네이비</span><span class="track"><span class="knob"></span></span><span class="ico sun" aria-hidden="true">화이트</span></button>
+      <a href="login.html" class="btn btn-line btn-sm" aria-current="page">로그인</a>
+    </div>
+  </div>
+</header>
+
+<main class="page-top">
+  <div class="shell">
+    <div class="auth">
+      <div class="sec-head">
+        <div class="eyebrow">LOGIN</div>
+        <h1>운영자 로그인</h1>
+        <p>로그인하면 새 콘텐츠를 올리고 고칠 수 있습니다. 운영자 계정만 들어올 수 있어요.</p>
+      </div>
+
+      <form class="auth-box" id="login-form" novalidate>
+        <label class="field">
+          <span>이메일</span>
+          <input type="email" name="email" autocomplete="username" placeholder="name@example.com" required>
+        </label>
+        <label class="field">
+          <span>비밀번호</span>
+          <input type="password" name="password" autocomplete="current-password" placeholder="비밀번호 입력" required>
+        </label>
+        <p class="auth-msg" id="login-msg" role="status"></p>
+        <button type="submit" class="btn btn-gold">로그인</button>
+        <a href="home.html" class="auth-back">← 홈으로 돌아가기</a>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="shell">
+    <div class="fbrand">리빙팡팡 | 티커의 경제학</div>
+    <p class="fnote">영상은 정보 제공용이며 투자 권유가 아닙니다. 제도·금리·세율은 영상 게시 시점 기준이니 신청·계약 전에 공식 안내를 확인해 주세요.</p>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+<script>
+/* 화면 설계 단계 — 로그인 서버(예: Supabase)를 연결하기 전이라 입력 확인까지만 합니다 */
+const form = document.getElementById('login-form');
+const msg = document.getElementById('login-msg');
+form.addEventListener('submit', e=>{
+  e.preventDefault();
+  if(!form.email.value.trim() || !form.password.value){
+    msg.textContent = '이메일과 비밀번호를 모두 입력해 주세요.';
+    return;
+  }
+  msg.textContent = '아직 로그인 서버가 연결되지 않았습니다. 연결 후 사용할 수 있어요.';
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>리빙팡팡 컬러 팔레트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* 레이아웃: 영상 속 '어두운 무대 + 금빛 조명'을 그대로 옮긴 다크 우선 페이지. 한 칸짜리 흐름, 견본은 그리드로 접힘 */
+:root{
+  /* 다크(기본) — 채널 영상과 같은 무대 */
+  --stage:#14161C; --panel:#1F242D; --line:#2C323D; --ink:#F8FAFC; --mute:#9CA3AF;
+  --gold:#FFB703; --gold-soft:#FFD166; --emerald:#19A572; --emerald-hi:#2DD4A3; --teal-deep:#0F766E; --alert:#E63946;
+  --on-gold:#14161C; --link:#2DD4A3;
+  --display:"Noto Sans KR","Malgun Gothic",sans-serif; --body:"Noto Sans KR","Malgun Gothic",sans-serif; --mono:"JetBrains Mono",Consolas,monospace;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){ :root:not([data-theme="dark"]){
+  --stage:#F6F7F9; --panel:#FFFFFF; --line:#E3E6EB; --ink:#14161C; --mute:#5B6472; --link:#0F766E; color-scheme:light } }
+:root[data-theme="light"]{ --stage:#F6F7F9; --panel:#FFFFFF; --line:#E3E6EB; --ink:#14161C; --mute:#5B6472; --link:#0F766E; color-scheme:light }
+:root[data-theme="dark"]{ --stage:#14161C; --panel:#1F242D; --line:#2C323D; --ink:#F8FAFC; --mute:#9CA3AF; --link:#2DD4A3; color-scheme:dark }
+
+body{background:var(--stage);color:var(--ink);font:16px/1.65 var(--body);margin:0}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:20px;padding-block:28px 64px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.25;margin:0}
+h1{font-size:clamp(28px,5vw,44px);font-weight:900;letter-spacing:-.02em}
+h2{font-size:22px;font-weight:700;margin-top:52px;margin-bottom:6px}
+.lead{color:var(--mute);max-width:62ch;margin:10px 0 0}
+.eyebrow{font:500 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.hero{position:relative;padding-block:22px 6px}
+.hero::before{content:"";position:absolute;inset:-40px -20px auto auto;width:280px;height:280px;border-radius:50%;
+  background:radial-gradient(circle,color-mix(in srgb,var(--gold) 28%,transparent),transparent 70%);pointer-events:none;z-index:0}
+.hero>*{position:relative;z-index:1}
+.sec-note{color:var(--mute);font-size:14px;margin:0 0 16px;max-width:62ch}
+
+/* 견본 */
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.role{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px;min-width:0}
+.role h3{font-size:15px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.role h3 span{font:500 12px var(--mono);color:var(--mute)}
+.sw{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center}
+.chip{width:64px;height:48px;border-radius:10px;border:1px solid var(--line)}
+.sw b{display:block;font-size:14px}
+.sw small{color:var(--mute);font-size:12.5px;display:block}
+.hex{font:500 13px var(--mono);background:transparent;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer}
+.hex:hover,.hex:focus-visible{border-color:var(--gold);outline:none}
+
+/* 분석 막대 */
+.bar{display:flex;height:22px;border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:10px;font-size:13.5px;color:var(--mute)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend em{width:10px;height:10px;border-radius:3px;display:inline-block}
+.legend b{color:var(--ink);font-variant-numeric:tabular-nums}
+
+/* 대비표 */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+th,td{padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+th{font-weight:500;color:var(--mute);font-size:12.5px;letter-spacing:.04em}
+tr:last-child td{border-bottom:0}
+.pair{display:inline-flex;align-items:center;justify-content:center;min-width:120px;padding:6px 12px;border-radius:8px;font-weight:700}
+.num{font-variant-numeric:tabular-nums;font-family:var(--mono)}
+.grade{font-size:12.5px;padding:3px 9px;border-radius:999px;border:1px solid var(--line)}
+.g-ok{color:var(--emerald-hi);border-color:color-mix(in srgb,var(--emerald) 60%,transparent)}
+.g-mid{color:var(--gold);border-color:color-mix(in srgb,var(--gold) 55%,transparent)}
+
+/* 적용 예시 */
+.demo{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.frame{border-radius:14px;padding:20px;border:1px solid var(--line);display:grid;gap:14px;min-width:0}
+.frame.dark{background:#14161C;color:#F8FAFC;border-color:#2C323D}
+.frame.light{background:#FFFFFF;color:#14161C;border-color:#E3E6EB}
+.frame .tag{font:500 11.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;opacity:.65}
+.badge{justify-self:start;background:#14161C;color:#F8FAFC;border-radius:999px;padding:8px 18px;font-weight:900;font-size:18px;border:1px solid #2C323D}
+.badge .n{color:#FFB703;font-size:1.2em}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+.btn{border:0;border-radius:10px;padding:10px 16px;font:700 14.5px var(--body);cursor:pointer}
+.btn.gold{background:#FFB703;color:#14161C}
+.btn.em{background:#19A572;color:#14161C}
+.btn.ghost{background:transparent;border:1px solid currentColor}
+.btn:focus-visible{outline:3px solid #2DD4A3;outline-offset:2px}
+.card{background:#1F242D;border:1px solid #2C323D;border-radius:12px;padding:14px;display:grid;gap:4px}
+.frame.light .card{background:#F6F7F9;border-color:#E3E6EB}
+.card .k{font-size:12.5px;opacity:.7}
+.card .v{font:900 26px var(--display);font-variant-numeric:tabular-nums}
+.v .gold{color:#FFB703}.frame.light .v .gold{color:#B7791F}
+.alert{display:inline-flex;gap:8px;align-items:center;font-size:13.5px;font-weight:700;color:#E63946}
+.alert::before{content:"";width:8px;height:8px;border-radius:50%;background:#E63946}
+.lnk{color:#2DD4A3;text-decoration:underline;text-underline-offset:3px}
+.frame.light .lnk{color:#0F766E}
+
+/* 규칙 */
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;padding:0;margin:0;list-style:none}
+.rules li{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:14.5px;min-width:0}
+.rules b{display:block;margin-bottom:4px}
+pre{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;overflow-x:auto;font:13px/1.7 var(--mono);margin:0}
+.copyrow{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--gold);color:var(--on-gold);
+  font-weight:700;font-size:14px;padding:8px 14px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none}
+#toast.on{opacity:1}
+footer{margin-top:48px;color:var(--mute);font-size:13px}
+@media (prefers-reduced-motion:reduce){#toast{transition:none}}
+@media (max-width:440px){.sw{grid-template-columns:52px 1fr}.sw .hex{grid-column:2;justify-self:start}.chip{width:52px}}
+</style>
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Living PangPang · 티커의 경제학</div>
+    <h1>리빙팡팡 컬러 팔레트</h1>
+    <p class="lead">어두운 무대 위에 금빛 조명이 떨어지고, 해결 장면에서는 에메랄드 네온이 켜집니다. 채널 썸네일 36장과 장면 이미지 221장에서 실제로 뽑은 색으로 만든 홈페이지용 팔레트입니다.</p>
+  </header>
+
+  <h2>역할별 색</h2>
+  <p class="sec-note">HEX 코드를 누르면 복사됩니다.</p>
+  <div class="roles">
+    <section class="role">
+      <h3>주컬러 <span>PRIMARY</span></h3>
+      <div class="sw"><div class="chip" style="background:#FFB703"></div><div><b>티커 골드</b><small>버튼, 숫자 강조, 핵심 링크 배경</small></div><button class="hex" data-c="#FFB703">#FFB703</button></div>
+      <div class="sw"><div class="chip" style="background:#FFD166"></div><div><b>연골드</b><small>영상 자막 색. 호버·보조 강조</small></div><button class="hex" data-c="#FFD166">#FFD166</button></div>
+    </section>
+    <section class="role">
+      <h3>보조컬러 <span>SECONDARY</span></h3>
+      <div class="sw"><div class="chip" style="background:#14161C"></div><div><b>미드나잇 차콜</b><small>페이지 배경. 영상 장면 배지 배경과 같은 색</small></div><button class="hex" data-c="#14161C">#14161C</button></div>
+      <div class="sw"><div class="chip" style="background:#1F242D"></div><div><b>카드 차콜</b><small>카드·패널 면</small></div><button class="hex" data-c="#1F242D">#1F242D</button></div>
+      <div class="sw"><div class="chip" style="background:#F8FAFC"></div><div><b>오프화이트</b><small>다크 배경 위 본문 글자</small></div><button class="hex" data-c="#F8FAFC">#F8FAFC</button></div>
+      <div class="sw"><div class="chip" style="background:#9CA3AF"></div><div><b>뮤트 그레이</b><small>보조 설명, 날짜, 캡션</small></div><button class="hex" data-c="#9CA3AF">#9CA3AF</button></div>
+    </section>
+    <section class="role">
+      <h3>포인트 컬러 <span>ACCENT</span></h3>
+      <div class="sw"><div class="chip" style="background:#19A572"></div><div><b>에메랄드</b><small>해결·이득·완료 표시, 보조 버튼</small></div><button class="hex" data-c="#19A572">#19A572</button></div>
+      <div class="sw"><div class="chip" style="background:#2DD4A3"></div><div><b>밝은 에메랄드</b><small>다크 배경 위 링크·포커스 링</small></div><button class="hex" data-c="#2DD4A3">#2DD4A3</button></div>
+      <div class="sw"><div class="chip" style="background:#0F766E"></div><div><b>진청록</b><small>흰 배경 위 링크·글자 강조</small></div><button class="hex" data-c="#0F766E">#0F766E</button></div>
+      <div class="sw"><div class="chip" style="background:#E63946"></div><div><b>경고 레드</b><small>'함정·주의' 표시에만. 수익률 숫자에는 쓰지 않음</small></div><button class="hex" data-c="#E63946">#E63946</button></div>
+    </section>
+  </div>
+
+  <h2>영상 속 색 비율</h2>
+  <p class="sec-note">어두운 배경을 뺀 선명한 색만 모은 대략적인 비율입니다. 따뜻한 금색 계열이 절반 가까이, 청록·에메랄드 계열이 4분의 1을 차지합니다.</p>
+  <div class="bar" role="img" aria-label="금색·주황 약 45%, 청록·에메랄드 약 25%, 기타 약 30%">
+    <i style="flex:45;background:linear-gradient(90deg,#BF8A39,#FFB703)"></i>
+    <i style="flex:25;background:linear-gradient(90deg,#19A572,#2C909E)"></i>
+    <i style="flex:30;background:#4B5563"></i>
+  </div>
+  <div class="legend">
+    <span><em style="background:#FFB703"></em>금색·주황 (조명, 동전, 자막) <b>약 45%</b></span>
+    <span><em style="background:#19A572"></em>청록·에메랄드 (해결 장면 네온) <b>약 25%</b></span>
+    <span><em style="background:#4B5563"></em>빨강·파랑 등 기타 <b>약 30%</b></span>
+  </div>
+
+  <h2>글자 대비 (WCAG)</h2>
+  <p class="sec-note">본문 글자는 4.5 이상(AA), 큰 제목은 3 이상이면 웹 접근성 기준을 통과합니다.</p>
+  <div class="tbl"><table>
+    <tr><th>조합</th><th>미리보기</th><th>대비</th><th>판정</th></tr>
+    <tr><td>오프화이트 글자 / 차콜 배경</td><td><span class="pair" style="background:#14161C;color:#F8FAFC">금리 3.5%</span></td><td class="num">17.3</td><td><span class="grade g-ok">AAA</span></td></tr>
+    <tr><td>골드 글자 / 차콜 배경</td><td><span class="pair" style="background:#14161C;color:#FFB703">금리 3.5%</span></td><td class="num">10.4</td><td><span class="grade g-ok">AAA</span></td></tr>
+    <tr><td>차콜 글자 / 골드 버튼</td><td><span class="pair" style="background:#FFB703;color:#14161C">구독하기</span></td><td class="num">10.4</td><td><span class="grade g-ok">AAA · 버튼 추천</span></td></tr>
+    <tr><td>밝은 에메랄드 글자 / 차콜 배경</td><td><span class="pair" style="background:#14161C;color:#2DD4A3">자세히 보기</span></td><td class="num">9.5</td><td><span class="grade g-ok">AAA</span></td></tr>
+    <tr><td>에메랄드 글자 / 차콜 배경</td><td><span class="pair" style="background:#14161C;color:#19A572">절약 완료</span></td><td class="num">5.7</td><td><span class="grade g-ok">AA</span></td></tr>
+    <tr><td>차콜 글자 / 에메랄드 버튼</td><td><span class="pair" style="background:#19A572;color:#14161C">계산해 보기</span></td><td class="num">5.7</td><td><span class="grade g-ok">AA</span></td></tr>
+    <tr><td>진청록 글자 / 흰 배경</td><td><span class="pair" style="background:#FFFFFF;color:#0F766E;border:1px solid #E3E6EB">자세히 보기</span></td><td class="num">5.5</td><td><span class="grade g-ok">AA</span></td></tr>
+    <tr><td>경고 레드 / 차콜 배경</td><td><span class="pair" style="background:#14161C;color:#E63946">함정 주의</span></td><td class="num">4.3</td><td><span class="grade g-mid">큰 글씨·아이콘만</span></td></tr>
+    <tr><td>골드 글자 / 흰 배경</td><td><span class="pair" style="background:#FFFFFF;color:#B7791F;border:1px solid #E3E6EB">금리 3.5%</span></td><td class="num">3.6</td><td><span class="grade g-mid">큰 글씨만</span></td></tr>
+    <tr><td>흰 글자 / 에메랄드 버튼</td><td><span class="pair" style="background:#19A572;color:#FFFFFF">계산해 보기</span></td><td class="num">3.2</td><td><span class="grade g-mid">큰 글씨만 · 차콜 글자 권장</span></td></tr>
+  </table></div>
+
+  <h2>적용 예시</h2>
+  <p class="sec-note">영상의 장면 배지처럼 숫자만 골드로 키우면, 홈페이지와 영상이 같은 채널로 보입니다.</p>
+  <div class="demo">
+    <div class="frame dark">
+      <div class="tag">다크 테마 (기본 추천)</div>
+      <div class="badge"><span class="n">2050</span>억 → <span class="n">50</span>조 청구서</div>
+      <div class="card"><span class="k">10년 무사고면 건강보험료</span><span class="v"><span class="gold">45.9</span>% 할인</span></div>
+      <div class="btns"><button class="btn gold">최신 영상 보기</button><button class="btn em">무료 잠금 3개 확인</button><button class="btn ghost">채널 소개</button></div>
+      <div><span class="alert">함정: 직접 송금은 잠금으로 못 막습니다</span></div>
+      <a class="lnk" href="#roles" onclick="return false">전체 영상에서 계산 방법 보기</a>
+    </div>
+    <div class="frame light">
+      <div class="tag">라이트 테마</div>
+      <div class="badge"><span class="n">2050</span>억 → <span class="n">50</span>조 청구서</div>
+      <div class="card"><span class="k">10년 무사고면 건강보험료</span><span class="v"><span class="gold">45.9</span>% 할인</span></div>
+      <div class="btns"><button class="btn gold">최신 영상 보기</button><button class="btn em">무료 잠금 3개 확인</button><button class="btn ghost">채널 소개</button></div>
+      <div><span class="alert">함정: 직접 송금은 잠금으로 못 막습니다</span></div>
+      <a class="lnk" href="#roles" onclick="return false">전체 영상에서 계산 방법 보기</a>
+    </div>
+  </div>
+
+  <h2>쓰는 규칙</h2>
+  <ul class="rules">
+    <li><b>골드는 버튼과 숫자에</b>흰 배경에서는 글자색으로 쓰지 말고 버튼 배경·강조 띠로만 씁니다.</li>
+    <li><b>레드는 경고에만</b>한국 주식은 상승이 빨강입니다. 수익률·가격 숫자에 레드를 쓰면 의미가 뒤집혀 보입니다.</li>
+    <li><b>에메랄드 버튼 글자는 차콜</b>흰 글자는 대비 3.2로 본문 크기에서 기준 미달입니다.</li>
+    <li><b>한 화면에 강조색 하나</b>골드와 에메랄드를 같은 줄에 나란히 강조하지 않습니다.</li>
+    <li><b>글꼴은 Pretendard</b>앞으로 나올 영상의 자막·배지와 같은 글꼴입니다. 아래 '글꼴 불러오기' 줄을 꼭 함께 넣으세요.</li>
+    <li><b>숫자는 고정폭 숫자</b>표·가격에는 font-variant-numeric: tabular-nums 로 자리를 맞춥니다.</li>
+  </ul>
+
+  <h2>CSS 토큰</h2>
+  <div class="copyrow"><span class="sec-note" style="margin:0">홈페이지 스타일시트 맨 위에 붙여 넣으면 됩니다.</span><button class="hex" id="copyCss">전체 복사</button></div>
+<pre id="css">:root {
+  /* 주컬러 */
+  --lp-gold: #FFB703;        /* 버튼, 숫자 강조 */
+  --lp-gold-soft: #FFD166;   /* 자막색, 호버 */
+  /* 보조컬러 */
+  --lp-stage: #14161C;       /* 페이지 배경 */
+  --lp-panel: #1F242D;       /* 카드 */
+  --lp-ink: #F8FAFC;         /* 본문 글자 */
+  --lp-mute: #9CA3AF;        /* 보조 글자 */
+  /* 포인트 컬러 */
+  --lp-emerald: #19A572;     /* 해결·완료, 보조 버튼 */
+  --lp-emerald-hi: #2DD4A3;  /* 다크 배경 링크 */
+  --lp-teal-deep: #0F766E;   /* 흰 배경 링크 */
+  --lp-alert: #E63946;       /* 경고 표시만 */
+  /* 글꼴 (아래 ① 불러오기 줄이 head에 있어야 방문자에게 적용됨) */
+  --lp-font: "Pretendard Variable", "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif;
+}
+body { font-family: var(--lp-font); }</pre>
+
+  <h2>글꼴 불러오기</h2>
+  <div class="copyrow"><span class="sec-note" style="margin:0">CSS 토큰은 글꼴 이름만 지정합니다. 이 한 줄을 홈페이지 &lt;head&gt; 안에 넣어야 방문자 기기에서도 Pretendard가 보입니다.</span><button class="hex" id="copyLink">복사</button></div>
+<pre id="fontlink">&lt;link rel="stylesheet" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"&gt;</pre>
+  <p class="sec-note" style="margin-top:10px">확인은 시크릿 창이나 휴대폰으로 하세요. 내 PC에는 글꼴이 설치돼 있어 빠뜨려도 제대로 보입니다.</p>
+
+  <footer>색 추출 기준: 채널 썸네일 36장 · 장면 이미지 221장. 대비값은 WCAG 2.1 계산식.</footer>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const toast=document.getElementById('toast');let tm;
+function show(t){toast.textContent=t;toast.classList.add('on');clearTimeout(tm);tm=setTimeout(()=>toast.classList.remove('on'),1400);}
+async function copy(text,label,id='css'){
+  try{await navigator.clipboard.writeText(text);show(label+' 복사됨');}
+  catch(e){const r=document.createRange();const el=document.getElementById(id);r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);show('선택됨 — Ctrl+C로 복사');}
+}
+document.querySelectorAll('.hex[data-c]').forEach(b=>b.addEventListener('click',()=>copy(b.dataset.c,b.dataset.c)));
+document.getElementById('copyCss').addEventListener('click',()=>copy(document.getElementById('css').textContent,'CSS 토큰'));
+document.getElementById('copyLink').addEventListener('click',()=>copy(document.getElementById('fontlink').textContent,'불러오기 줄','fontlink'));
+</script>
+
+</body></html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>레이아웃 연습 파일 — 홍길동 포트폴리오</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<!--
+  연습용 파일입니다. (Day 8 · 예제로 따라 하기)
+  - 지금은 "아무것도 정하지 않은" 처음 상태입니다. 아래 CSS가 전부입니다.
+  - Claude Code에게 요청문을 한 단계씩 보내서 ①폭 → ②12컬럼 → ③반응형 → ④폰트 → ⑤여백을 차례대로 적용하고, 이어지는 수업에서 굵기·색·버튼 상태를 같은 파일에 이어서 적용합니다.
+  - 사진은 같은 폴더의 img 폴더(visual, profile, project-1~3)를 씁니다. 폴더 위치를 바꾸면 사진이 안 보입니다.
+  - 처음부터 다시 하고 싶으면 압축 파일에서 이 파일을 다시 꺼내면 됩니다.
+-->
+<style>
+/* 꾸밈(색·테두리) — 건드리지 않아도 됩니다 */
+body{color:#12172a;background:#fff}
+a{color:inherit;text-decoration:none}
+img{display:block;border-radius:8px}
+.logo{font-weight:800}
+nav a{color:#525a72}
+.btn{display:inline-block;border:1px solid #12172a;border-radius:6px;background:#fff;color:#12172a;font-weight:600}
+.btn.primary{background:#12172a;color:#fff}
+.burger{display:none;border:0;background:none;font-size:22px;color:#12172a;padding:0}
+.eyebrow{color:#425a8f}
+.lead{color:#525a72}
+.card{background:#fff;border:1px solid #e1e5ef;border-radius:12px;overflow:hidden}
+.card img{border-radius:0}
+.card p{color:#525a72}
+.contact{border-top:1px solid #e1e5ef}
+footer{color:#525a72;border-top:1px solid #e1e5ef}
+
+/* 0단계: 아무것도 정하지 않은 상태 — 여기에 ①~⑤를 하나씩 더해갑니다 */
+body{margin:0;font-family:serif;line-height:1.3}
+header,section,footer{padding:6px 0}
+header{display:flex;justify-content:space-between}
+nav a{margin-left:8px}
+img{width:100%}
+h1{font-size:22px}
+h2{font-size:15px}
+h3{font-size:13px}
+p{font-size:12px}
+.card{margin-bottom:37px}
+.btn{padding:3px 6px;font-size:11px}
+
+/* ①단계: 콘텐츠 폭 — 화면의 90%, 최대 1100px, 가운데 정렬 */
+header,section,footer{width:90%;max-width:1100px;margin-left:auto;margin-right:auto}
+
+/* ②단계: 12컬럼 그리드 — 모바일(기본)은 전부 12칸, 768px 이상에서 칸 나누기 */
+.hero,.about,.cards{display:grid;grid-template-columns:repeat(12,1fr);gap:20px}
+.hero>*,.about>*,.cards>*{grid-column:span 12;min-width:0}
+.hero-img img,.card img{aspect-ratio:4/3;object-fit:cover}
+.about-img img{aspect-ratio:1/1;object-fit:cover}
+@media (min-width:768px){
+  .hero-text{grid-column:span 6}
+  .hero-img{grid-column:span 6}
+  .about-img{grid-column:span 4}
+  .about-text{grid-column:span 8}
+}
+
+/* ③단계: 반응형(모바일 퍼스트) — 기본은 모바일, 768px·1024px에서 덮어쓰기 */
+header{flex-wrap:wrap;align-items:center}
+.burger{display:block;cursor:pointer}
+nav{display:none;width:100%}
+nav a{display:block;margin-left:0}
+.top.open nav{display:block}
+@media (min-width:768px){
+  .burger{display:none}
+  nav{display:block;width:auto}
+  nav a{display:inline-block;margin-left:8px}
+  .cards>.card{grid-column:span 6}
+}
+@media (min-width:1024px){
+  .cards>.card{grid-column:span 4}
+}
+
+/* ④단계: 폰트 — Pretendard 하나, 본문 16px·줄 간격 1.7, 제목은 화면 폭 따라 변함 */
+body{font-family:'Pretendard',sans-serif;font-size:16px;line-height:1.7;word-break:keep-all}
+p{font-size:16px}
+h1{font-size:clamp(32px,5vw,56px);font-weight:800}
+h2{font-size:clamp(24px,3vw,32px);font-weight:800}
+h3{font-size:20px}
+h1,h2,h3{line-height:1.3}
+.lead{font-size:18px;max-width:34em}
+
+/* ⑤단계: 여백 — 5·10단위로 통일 */
+header,footer{padding:5px 0}
+section{padding:60px 0}
+h1,h2,h3{margin:0 0 30px}
+p{margin:0 0 15px}
+.hero,.about,.cards{column-gap:20px;row-gap:30px}
+.card{margin-bottom:35px}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;height:50px;padding:0 30px;box-sizing:border-box}
+@media (min-width:768px){
+  section{padding:100px 0}
+  nav a{margin-left:10px}
+}
+
+/* ⑥단계: 굵기 — 본문 400, 메뉴 500, 버튼·작은 제목·라벨 700, 큰 제목 800 */
+body{font-weight:400}
+nav a{font-weight:500}
+.btn,h3,.eyebrow{font-weight:700}
+.logo,h1,h2{font-weight:800}
+
+/* ⑦단계: 줄 간격·글줄 길이 */
+.lead{line-height:1.8}
+.card p{font-size:15px;line-height:1.6}
+.about-text p,.contact p{max-width:34em}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="logo">HONG.</div>
+  <nav><a href="#">소개</a><a href="#">작업물</a><a href="#">연락</a></nav>
+  <button class="burger" aria-label="메뉴" aria-expanded="false">☰</button>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">PORTFOLIO</p>
+      <h1>만든 것으로 증명하는<br>홍길동의 포트폴리오</h1>
+      <p class="lead">기획부터 배포까지 직접 구현한 프로젝트들을 모았습니다. 아래에서 작업물과 사용한 기술을 확인하실 수 있습니다.</p>
+      <div class="btns"><a class="btn primary" href="#">포트폴리오 보기 →</a><a class="btn" href="#">소개 더 보기</a></div>
+    </div>
+    <div class="hero-img">
+      <img src="img/visual.jpg" alt="작업 공간 사진">
+    </div>
+  </section>
+
+  <section class="about">
+    <div class="about-img">
+      <img src="img/profile.jpg" alt="홍길동 프로필 사진">
+    </div>
+    <div class="about-text">
+      <h2>안녕하세요,<br>웹을 만들고 있는 홍길동입니다.</h2>
+      <p>결과물만큼 그 과정에서 무엇을 고민했는지를 중요하게 생각합니다. 혼자 기획부터 배포까지 끝내본 프로젝트도, 여럿이 역할을 나눠 완성한 프로젝트도 있습니다.</p>
+    </div>
+  </section>
+
+  <section class="works">
+    <h2>주요 프로젝트</h2>
+    <div class="cards">
+      <article class="card">
+        <img src="img/project-1.jpg" alt="오늘의 할일 앱 화면">
+        <h3>오늘의 할일 앱</h3>
+        <p>Supabase로 데이터를 저장하는 개인 투두리스트</p>
+      </article>
+      <article class="card">
+        <img src="img/project-2.jpg" alt="팀 일정 공유 페이지 화면">
+        <h3>팀 일정 공유 페이지</h3>
+        <p>3인 팀 프로젝트, 역할을 나눠 화면별로 맡아 제작</p>
+      </article>
+      <article class="card">
+        <img src="img/project-3.jpg" alt="무드보드 갤러리 화면">
+        <h3>무드보드 갤러리</h3>
+        <p>좋아하는 이미지를 모아두는 개인 갤러리 페이지</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="contact">
+    <h2>문의</h2>
+    <p>작업 의뢰나 협업 제안은 아래 이메일로 보내주세요.</p>
+    <a class="btn primary" href="#">hello@example.com</a>
+  </section>
+
+</main>
+
+<footer>© 2026 홍길동</footer>
+
+<script>
+// ☰ 버튼으로 모바일 메뉴 열고 닫기
+const header = document.querySelector('.top');
+const burger = header.querySelector('.burger');
+burger.addEventListener('click', () => {
+  const open = header.classList.toggle('open');
+  burger.setAttribute('aria-expanded', open);
+});
+</script>
+
+</body>
+</html>

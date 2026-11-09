@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>콘텐츠 — 티커</title>
+<meta name="description" content="리빙팡팡 | 티커의 경제학에서 다룬 이야기를 주제별로 모아 둔 목록입니다.">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="site.css">
+<script>try{if(localStorage.getItem('theme')==='light')document.documentElement.dataset.theme='light';}catch(e){}</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="shell">
+    <a href="home.html" class="logo">리빙팡팡 | 티커의 경제학</a>
+    <div class="head-right">
+      <nav class="main">
+        <a href="home.html">Home</a>
+        <a href="home.html#about">About</a>
+        <a href="contents.html" class="on">Contents</a>
+        <a href="home.html#contact">Contact</a>
+      </nav>
+      <button type="button" class="theme-toggle" id="theme-toggle" role="switch" aria-checked="false" aria-label="화이트 모드" title="화이트 모드"><span class="ico moon" aria-hidden="true">네이비</span><span class="track"><span class="knob"></span></span><span class="ico sun" aria-hidden="true">화이트</span></button>
+      <a href="login.html" class="btn btn-line btn-sm">로그인</a>
+    </div>
+  </div>
+</header>
+
+<main class="page-top">
+  <div class="shell">
+    <div class="sec-head">
+      <div class="eyebrow">CONTENTS</div>
+      <h1>콘텐츠</h1>
+      <p>영상으로 다룬 이야기를 글로도 정리해 둡니다. 주제를 눌러 골라 보세요.</p>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="post-grid cols-3" id="list"></div>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="shell">
+    <div class="fbrand">리빙팡팡 | 티커의 경제학</div>
+    <p class="fnote">영상은 정보 제공용이며 투자 권유가 아닙니다. 제도·금리·세율은 영상 게시 시점 기준이니 신청·계약 전에 공식 안내를 확인해 주세요.</p>
+  </div>
+</footer>
+
+<script src="data/videos.js"></script>
+<script src="site.js"></script>
+<script>
+const chips = document.getElementById('chips');
+const list = document.getElementById('list');
+const start = new URLSearchParams(location.search).get('cat');
+let current = CATS[start] ? start : 'all';
+
+function render(){
+  list.replaceChildren();
+  const items = VIDEOS.filter(v => current === 'all' || v.cat === current);
+  if(!items.length) list.append(el('p','empty','아직 올린 글이 없습니다.'));
+  items.forEach(v => list.append(postCard(v)));
+  chips.querySelectorAll('.chip').forEach(c => c.classList.toggle('on', c.dataset.cat === current));
+}
+
+[['all','전체']].concat(Object.keys(CATS).map(k => [k, CATS[k].label])).forEach(([key,label])=>{
+  const b = el('button','chip',label);
+  b.type = 'button'; b.dataset.cat = key;
+  const n = key === 'all' ? VIDEOS.length : VIDEOS.filter(v => v.cat === key).length;
+  b.append(el('small',null,n));
+  b.addEventListener('click', ()=>{
+    current = key;
+    history.replaceState(null,'', key === 'all' ? 'contents.html' : 'contents.html?cat=' + key);
+    render();
+  });
+  chips.append(b);
+});
+render();
+</script>
+
+</body>
+</html>

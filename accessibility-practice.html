@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>COFFEE LAB — 접근성 연습 예문</title>
+<!-- 접근성 연습용 예문입니다. 일부러 접근성이 지켜지지 않게 만든 파일입니다. Claude Code로 점검하고 고치는 연습에 씁니다. -->
+<style>
+body{margin:0;font-family:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;color:#1c2a4a;background:#fff;font-size:1rem;line-height:1.6}
+.wrap{max-width:420px;margin:0 auto}
+.top{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #e6e9f1}
+.logo{font-weight:800;letter-spacing:.04em}
+.top nav{display:flex;gap:14px}
+.top a{color:#1c2a4a;text-decoration:none;font-weight:700;font-size:.85rem}
+.hero{padding:14px 16px 0}
+.hero img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:10px}
+.main{padding:14px 16px 24px}
+.title{font-size:1.25rem;font-weight:800;margin:0 0 4px}
+.desc{color:#b3b3b3;margin:0 0 12px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.row a{color:#1c2a4a;font-weight:700}
+.btn{height:26px;padding:0 10px;font-size:.7rem;font-weight:700;border:0;border-radius:6px;background:#1c2a4a;color:#fff;cursor:pointer}
+a,button,input{outline:none}
+.field input{width:100%;box-sizing:border-box;font:inherit;padding:9px 10px;border:2px solid #c0392b;border-radius:6px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#c0392b;margin-top:6px}
+.marquee{overflow:hidden;white-space:nowrap;background:#f3f6fb;border-radius:8px;margin:14px 0;padding:8px 0}
+.marquee span{display:inline-block;padding-left:100%;animation:slide 12s linear infinite;font-weight:700}
+@keyframes slide{to{transform:translateX(-100%)}}
+.notice{height:72px;overflow:hidden;background:#fff8e1;border-radius:8px;padding:10px 12px;font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><div class="logo">COFFEE LAB</div><nav><a href="#">메뉴</a><a href="#">예약 안내</a><a href="#">오시는 길</a></nav></div>
+  <div class="hero"><img src="img/photo.jpg"></div>
+  <div class="main">
+    <div class="title">오늘의 원두</div>
+    <p class="desc">산미가 부드러운 에티오피아 원두를 새로 들여왔습니다. 오전 10시부터 시음할 수 있어요.</p>
+    <div class="row"><a href="#">여기를 누르세요</a><button class="btn" type="button">예약</button></div>
+    <div class="field"><input type="email" placeholder="이메일 주소"><div class="dot"></div></div>
+    <div class="marquee"><div><span>오늘만 신메뉴 시음 이벤트! 라떼를 주문하면 쿠키를 드려요 · 오늘만 신메뉴 시음 이벤트!</span></div></div>
+    <div class="notice">매주 월요일은 정기 휴무입니다. 10명 이상 단체 예약은 3일 전에 문의해주세요.</div>
+  </div>
+</div>
+</body>
+</html>
