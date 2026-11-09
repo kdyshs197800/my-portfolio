@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>home.html 이미지 추천안</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="site.css">
+<script>try{if(localStorage.getItem('theme')==='light')document.documentElement.dataset.theme='light';}catch(e){}</script>
+<style>
+  .rec{border:1px dashed var(--gold);border-radius:var(--r-card);padding:24px;margin-top:24px}
+  .rec h3{font-size:18px;font-weight:800}
+  .rec p{font-size:14px;color:var(--text-soft);margin-top:4px}
+  .tag{display:inline-block;font-size:12px;font-weight:700;border:1px solid var(--line);border-radius:var(--r-pill);padding:4px 12px;margin:8px 8px 0 0}
+  .tag.new{border-color:var(--gold);color:var(--gold-text)}
+  .topic img.ic{width:48px;height:48px;margin-bottom:16px}
+  .when .wrap{display:flex;gap:16px;align-items:center}
+  .when img{width:48px;height:48px}
+  .contact-box img{width:160px;margin-bottom:16px}
+  .logo-demo{display:flex;align-items:center;gap:8px}
+  .logo-demo img{width:32px;height:32px}
+  .compare{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:24px}
+  .compare figure{background:var(--navy-2);border-radius:var(--r-card);padding:24px;text-align:center}
+  .compare figure.white{background:#fff;color:#1c1b42}
+  .compare .row{display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
+  .compare img{width:48px;height:48px}
+  .compare figcaption{font-size:13px;margin-top:16px}
+  @media (max-width:720px){.compare{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="shell">
+    <span class="logo logo-demo"><img src="img/svg-candidates/logo-ticker.svg" alt="">리빙팡팡 | 티커의 경제학</span>
+    <div class="head-right">
+      <button type="button" class="theme-toggle" id="theme-toggle" role="switch" aria-checked="false" aria-label="화이트 모드" title="화이트 모드"><span class="ico moon" aria-hidden="true">네이비</span><span class="track"><span class="knob"></span></span><span class="ico sun" aria-hidden="true">화이트</span></button>
+    </div>
+  </div>
+</header>
+
+<section class="sec">
+  <div class="shell">
+    <div class="sec-head">
+      <div class="eyebrow">IMAGE PICK</div>
+      <h2>home.html 이미지 추천안</h2>
+      <p>점선 상자마다 넣을 위치와 파일을 적었습니다. 오른쪽 위 토글로 화이트 모드에서도 확인해 보세요. 마음에 드는 번호를 알려 주시면 그것만 home.html에 적용합니다.</p>
+    </div>
+
+    <div class="rec">
+      <h3>① 로고 마크 — 헤더 로고 앞 (이 페이지 맨 위에 적용된 모습)</h3>
+      <p>티커 얼굴을 단순화한 동그란 마크. 파비콘으로도 쓸 수 있습니다.</p>
+      <span class="tag new">새로 생성 · logo-ticker.svg</span>
+    </div>
+
+    <div class="rec">
+      <h3>② 주제 카드 아이콘 6개 — ABOUT 섹션 카드 위</h3>
+      <p>지금은 글자만 있는 카드에 골드 선 아이콘을 얹습니다. 카드 hover 골드 테두리와 색이 맞습니다.</p>
+      <span class="tag new">새로 생성 · icon-biz / tax / home / market / benefit / save .svg</span>
+    </div>
+    <div class="about-grid" style="margin-top:24px">
+      <a class="topic"><img class="ic" src="img/svg-candidates/icon-biz.svg" alt=""><div class="k">BUSINESS</div><h3>티커의 수익구조 연구</h3><p>우리가 매일 돈 내는 가게, 그 돈은 누구 손에 얼마 갈까?</p></a>
+      <a class="topic"><img class="ic" src="img/svg-candidates/icon-tax.svg" alt=""><div class="k">TAX</div><h3>세금 · 연말정산 절세</h3><p>연말정산, 재산세, ISA.</p></a>
+      <a class="topic"><img class="ic" src="img/svg-candidates/icon-home.svg" alt=""><div class="k">HOME</div><h3>대출 · 전세 · 내 집 마련</h3><p>보금자리론, 전세 계약, 카드 빚.</p></a>
+      <a class="topic"><img class="ic" src="img/svg-candidates/icon-market.svg" alt=""><div class="k">MARKET</div><h3>주식 · 증시 · 투자</h3><p>코스피, 환율, ETF, 금.</p></a>
+      <a class="topic"><img class="ic" src="img/svg-candidates/icon-benefit.svg" alt=""><div class="k">BENEFIT</div><h3>지원금 · 정부 혜택</h3><p>근로장려금, 청년 적금, 실업급여.</p></a>
+      <a class="topic"><img class="ic" src="img/svg-candidates/icon-save.svg" alt=""><div class="k">SAVE</div><h3>생활비 · 보험 · 통신비 절약</h3><p>보험료, 통신 요금, 교통비.</p></a>
+    </div>
+
+    <div class="rec">
+      <h3>③ 업로드 달력 아이콘 — "주 4회, 정해진 요일에" 박스 왼쪽</h3>
+      <span class="tag new">새로 생성 · when-calendar.svg</span>
+    </div>
+    <div class="when">
+      <div class="wrap"><img src="img/svg-candidates/when-calendar.svg" alt=""><div><h3>주 4회, 정해진 요일에</h3><p>화 · 목 · 토 · 일 업로드.</p></div></div>
+      <div class="days"><span class="day">월</span><span class="day on">화</span><span class="day">수</span><span class="day on">목</span><span class="day">금</span><span class="day on">토</span><span class="day on">일</span></div>
+    </div>
+
+    <div class="rec">
+      <h3>④ 문의 일러스트 — CONTACT 상자 제목 위</h3>
+      <span class="tag new">새로 생성 · contact-mail.svg</span>
+    </div>
+    <div class="contact-box" style="margin-top:24px">
+      <div><img src="img/svg-candidates/contact-mail.svg" alt=""><div class="eyebrow">CONTACT</div><h2>비즈니스 · 협찬 문의</h2></div>
+      <div class="mail-box"><span>kdyshs343@gmail.com</span></div>
+    </div>
+
+    <div class="rec">
+      <h3>⑤ 히어로 사진 — 기존 img/ticker-hero.jpeg 유지 추천</h3>
+      <p>3D 렌더 사진이라 SVG로 바꾸면 사진을 SVG 안에 그대로 감싸기만 됩니다(용량·화질 이득 없음). 바꾸길 원하시면 감싼 SVG로 만들어 드릴 수 있습니다. 기존 img/의 visual·profile·project 사진은 회의실 스톡 사진이라 이 사이트 내용과 맞지 않아 추천하지 않습니다.</p>
+      <span class="tag">기존 이미지 · ticker-hero.jpeg</span>
+    </div>
+
+    <div class="compare">
+      <figure><div class="row"><img src="img/svg-candidates/icon-biz.svg" alt=""><img src="img/svg-candidates/icon-tax.svg" alt=""><img src="img/svg-candidates/icon-home.svg" alt=""><img src="img/svg-candidates/icon-market.svg" alt=""><img src="img/svg-candidates/icon-benefit.svg" alt=""><img src="img/svg-candidates/icon-save.svg" alt=""><img src="img/svg-candidates/when-calendar.svg" alt=""><img src="img/svg-candidates/logo-ticker.svg" alt=""></div><figcaption>네이비 카드 위</figcaption></figure>
+      <figure class="white"><div class="row"><img src="img/svg-candidates/icon-biz.svg" alt=""><img src="img/svg-candidates/icon-tax.svg" alt=""><img src="img/svg-candidates/icon-home.svg" alt=""><img src="img/svg-candidates/icon-market.svg" alt=""><img src="img/svg-candidates/icon-benefit.svg" alt=""><img src="img/svg-candidates/icon-save.svg" alt=""><img src="img/svg-candidates/when-calendar.svg" alt=""><img src="img/svg-candidates/logo-ticker.svg" alt=""></div><figcaption>흰 바탕 위</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<script src="site.js"></script>
+</body>
+</html>
