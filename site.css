@@ -178,7 +178,7 @@ nav.main a:hover,nav.main a.on{color:var(--text)}
 /* ---------- 계산기 (index.html #calc) ---------- */
 .say{display:flex;gap:16px;align-items:flex-start;margin-top:24px}
 .say .face{flex:none;width:48px;height:48px}
-.say p{font-size:14px;line-height:1.6;border:1px solid var(--line-strong);border-radius:var(--r-card);padding:12px 16px;color:var(--text-body)}
+.sec-head .say p,.say p{margin-top:0;font-size:14px;line-height:1.6;border:1px solid var(--line-strong);border-radius:var(--r-card);padding:12px 16px;color:var(--text-body)}
 .say p b{color:var(--gold-text)}
 .calc{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
 .calc .panel{grid-column:span 7;border:1px solid var(--line);border-radius:var(--r-card);padding:32px}
@@ -217,6 +217,8 @@ footer.site{border-top:1px solid var(--line);padding:48px 0 72px}
   nav.main{gap:16px}
   .head-right{flex-wrap:wrap;justify-content:center;gap:16px}
   nav.main a{font-size:13px}
+  .hero .shell{gap:24px;padding-top:16px}
+  .hero-photo{max-width:240px} /* 휴대폰 첫 화면에 제목까지 보이도록 캐릭터 축소 */
   .mail-box{flex-direction:column;align-items:stretch;padding:16px}
   .mail-box .btn{justify-content:center}
   .pager{grid-template-columns:1fr}
