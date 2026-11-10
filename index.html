@@ -17,6 +17,7 @@
     <div class="head-right">
       <nav class="main">
         <a href="#home">Home</a>
+        <a href="#calc">Calc</a>
         <a href="#about">About</a>
         <a href="contents.html">Contents</a>
         <a href="#contact">Contact</a>
@@ -40,6 +41,33 @@
     </div>
     <div class="hero-photo">
       <img src="img/ticker-hero.svg" alt="동전 탑을 양손에 들고 계단 앞에 선 티커 캐릭터">
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="calc">
+  <div class="shell">
+    <div class="sec-head">
+      <div class="eyebrow">CALCULATOR</div>
+      <h2>직접 넣어 보세요</h2>
+      <div class="say">
+        <img class="face" src="img/svg-candidates/logo-ticker.svg" alt="티커">
+        <p>대출 금액과 금리 변화만 넣으면 <b>1년 이자 차이</b>를 바로 보여 드려요.</p>
+      </div>
+    </div>
+    <div class="calc">
+      <div class="panel">
+        <label for="amt">대출 금액 <span class="val" id="amtV">2억 원</span></label>
+        <input type="range" id="amt" min="1000" max="50000" step="1000" value="20000">
+        <label for="rate">금리 변화 <span class="val" id="rateV">+0.25%p</span></label>
+        <input type="range" id="rate" min="-100" max="100" step="25" value="25">
+      </div>
+      <div class="out" aria-live="polite">
+        <div class="k">1년 이자 차이</div>
+        <div class="n" id="outN">+50만원</div>
+        <div class="m" id="outM">한 달에 약 42,000원 더</div>
+        <div class="note">단순 계산(원금 그대로 가정)입니다. 실제 이자는 상환 방식·가산금리에 따라 다릅니다.</div>
+      </div>
     </div>
   </div>
 </section>
@@ -137,6 +165,23 @@
 <script>
 const latest = document.getElementById('latest');
 VIDEOS.slice(0,4).forEach(v => latest.append(postCard(v)));
+// 계산기: 대출 금액(만원) × 금리 변화(0.01%p) → 1년 이자 차이
+(function(){
+  const a = document.getElementById('amt'), r = document.getElementById('rate');
+  const won = m => { const e = Math.floor(m/10000), rest = m%10000; return ((e?e+'억 ':'')+(rest?rest.toLocaleString()+'만 ':'')+'원'); };
+  const sign = n => n>0?'+':(n<0?'−':'');
+  function upd(){
+    const amt = +a.value, bp = +r.value;
+    const yr = Math.round(amt*bp/10000);                      // 만원
+    const mo = Math.round(Math.abs(amt*bp/12)/1000)*1000;     // 원 (천원 단위 반올림)
+    document.getElementById('amtV').textContent = won(amt);
+    document.getElementById('rateV').textContent = sign(bp)+Math.abs(bp/100).toFixed(2)+'%p';
+    document.getElementById('outN').textContent = sign(yr)+Math.abs(yr).toLocaleString()+'만원';
+    document.getElementById('outM').textContent = bp===0 ? '변화 없음' : '한 달에 약 '+mo.toLocaleString()+'원 '+(bp>0?'더':'덜');
+  }
+  a.addEventListener('input', upd); r.addEventListener('input', upd); upd();
+})();
+
 const copyBtn = document.getElementById('copy-mail');
 copyBtn.addEventListener('click', ()=>{
   navigator.clipboard.writeText(document.getElementById('mail-addr').textContent).then(()=>{

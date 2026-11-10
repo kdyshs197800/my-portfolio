@@ -175,6 +175,23 @@ nav.main a:hover,nav.main a.on{color:var(--text)}
 .auth-back{font-size:14px;font-weight:700;color:var(--text-soft);text-align:center}
 .auth-back:hover{color:var(--text)}
 
+/* ---------- 계산기 (index.html #calc) ---------- */
+.say{display:flex;gap:16px;align-items:flex-start;margin-top:24px}
+.say .face{flex:none;width:48px;height:48px}
+.say p{font-size:14px;line-height:1.6;border:1px solid var(--line-strong);border-radius:var(--r-card);padding:12px 16px;color:var(--text-body)}
+.say p b{color:var(--gold-text)}
+.calc{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+.calc .panel{grid-column:span 7;border:1px solid var(--line);border-radius:var(--r-card);padding:32px}
+.calc .out{grid-column:span 5;border:1px solid var(--gold);border-radius:var(--r-card);padding:32px;display:flex;flex-direction:column;justify-content:center}
+.calc label{display:flex;justify-content:space-between;gap:16px;font-size:14px;font-weight:700;margin-top:24px}
+.calc label:first-child{margin-top:0}
+.calc .val{color:var(--gold-text);font-variant-numeric:tabular-nums}
+.calc input[type=range]{width:100%;margin-top:8px;accent-color:var(--gold)}
+.calc .out .k{font-size:14px;color:var(--text-soft)}
+.calc .out .n{font-size:clamp(40px,5vw,56px);font-weight:800;letter-spacing:-.03em;line-height:1.2;color:var(--gold-text);font-variant-numeric:tabular-nums;margin-top:8px}
+.calc .out .m{font-size:16px;color:var(--text-body);margin-top:8px}
+.calc .out .note{font-size:12px;color:var(--text-soft);margin-top:16px}
+
 /* ---------- footer ---------- */
 footer.site{border-top:1px solid var(--line);padding:48px 0 72px}
 .fbrand{font-size:16px;font-weight:800;margin-bottom:8px}
@@ -187,6 +204,7 @@ footer.site{border-top:1px solid var(--line);padding:48px 0 72px}
   .hero-photo{order:-1;max-width:360px;margin:0 auto;width:100%}
   .about-grid,.post-grid,.post-grid.cols-3{grid-template-columns:1fr}
   .topic{grid-column:auto}
+  .calc .panel,.calc .out{grid-column:span 12}
   .contact-box{grid-template-columns:1fr;padding:32px 24px}
   .sec{padding:80px 0}
   .page-top{padding:48px 0 80px}
