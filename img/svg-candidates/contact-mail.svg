@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" width="240" height="160" role="img" aria-label="메일과 동전">
-<g fill="none" stroke="#F2A20C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="30" y="40" width="150" height="100" rx="12"/><path d="M34 46l71 52 71-52"/></g>
-<g fill="none" stroke="#F2A20C" stroke-width="2" stroke-linecap="round" opacity=".5"><path d="M196 30l10-10M206 50h14M196 70l10 10"/></g>
-<circle cx="180" cy="122" r="26" fill="#F2A20C"/><circle cx="180" cy="122" r="19" fill="none" stroke="#1C1B42" stroke-width="2.5"/>
+<g fill="none" stroke="#D4AF37" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="30" y="40" width="150" height="100" rx="12"/><path d="M34 46l71 52 71-52"/></g>
+<g fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" opacity=".5"><path d="M196 30l10-10M206 50h14M196 70l10 10"/></g>
+<circle cx="180" cy="122" r="26" fill="#D4AF37"/><circle cx="180" cy="122" r="19" fill="none" stroke="#1C1B42" stroke-width="2.5"/>
 <text x="180" y="130" text-anchor="middle" font-family="Pretendard,sans-serif" font-size="22" font-weight="800" fill="#1C1B42">₩</text>
 </svg>

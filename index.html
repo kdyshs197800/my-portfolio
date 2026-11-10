@@ -52,21 +52,61 @@
       <h2>직접 넣어 보세요</h2>
       <div class="say">
         <img class="face" src="img/svg-candidates/logo-ticker.svg" alt="티커">
-        <p>대출 금액과 금리 변화만 넣으면 <b>1년 이자 차이</b>를 바로 보여 드려요.</p>
+        <p>금액·금리·기간·상환 방식을 고르면 <b>월 상환액과 총 이자</b>가 얼마나 달라지는지 바로 계산해 드려요.</p>
       </div>
     </div>
     <div class="calc">
       <div class="panel">
-        <label for="amt">대출 금액 <span class="val" id="amtV">2억 원</span></label>
-        <input type="range" id="amt" min="1000" max="50000" step="1000" value="20000">
-        <label for="rate">금리 변화 <span class="val" id="rateV">+0.25%p</span></label>
-        <input type="range" id="rate" min="-100" max="100" step="25" value="25">
+        <div>
+          <label for="amt">대출 금액 <span class="val" id="amtV">3억 원</span></label>
+          <input type="range" id="amt" min="1000" max="100000" step="1000" value="30000">
+          <div class="scale" aria-hidden="true"><span>1천만 원</span><span>10억 원</span></div>
+        </div>
+        <div>
+          <label for="base">현재 금리 <span class="val" id="baseV">연 4.00%</span></label>
+          <input type="range" id="base" min="200" max="800" step="5" value="400">
+          <div class="scale" aria-hidden="true"><span>2%</span><span>8%</span></div>
+        </div>
+        <div>
+          <label for="rate">금리 변화 <span class="val" id="rateV">+0.25%p</span></label>
+          <input type="range" id="rate" min="-100" max="200" step="25" value="25">
+          <div class="scale" aria-hidden="true"><span>−1%p</span><span>+2%p</span></div>
+        </div>
+        <fieldset>
+          <legend>대출 기간</legend>
+          <div class="seg" data-key="years">
+            <button type="button" class="chip" data-v="10" aria-pressed="false">10년</button>
+            <button type="button" class="chip" data-v="20" aria-pressed="false">20년</button>
+            <button type="button" class="chip" data-v="30" aria-pressed="true">30년</button>
+            <button type="button" class="chip" data-v="40" aria-pressed="false">40년</button>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>상환 방식</legend>
+          <div class="seg" data-key="method">
+            <button type="button" class="chip" data-v="annuity" aria-pressed="true">원리금균등</button>
+            <button type="button" class="chip" data-v="principal" aria-pressed="false">원금균등</button>
+            <button type="button" class="chip" data-v="bullet" aria-pressed="false">만기일시</button>
+          </div>
+        </fieldset>
       </div>
-      <div class="out" aria-live="polite">
-        <div class="k">1년 이자 차이</div>
-        <div class="n" id="outN">+50만원</div>
-        <div class="m" id="outM">한 달에 약 42,000원 더</div>
-        <div class="note">단순 계산(원금 그대로 가정)입니다. 실제 이자는 상환 방식·가산금리에 따라 다릅니다.</div>
+      <div class="out">
+        <div aria-live="polite">
+          <div class="k" id="outK">월 상환액 변화</div>
+          <div class="n" id="outN">+0원</div>
+          <div class="sub" id="outS"></div>
+        </div>
+        <dl class="rows">
+          <div><dt>적용 금리</dt><dd id="rR"></dd></div>
+          <div><dt>첫 1년 이자 차이</dt><dd id="r1"></dd></div>
+          <div><dt id="rTl">총 이자 차이</dt><dd id="rT"></dd></div>
+        </dl>
+        <div class="bars" aria-label="총 상환액 비교">
+          <div class="bar"><div class="lab"><span>지금 금리</span><b id="bAt"></b></div><div class="track"><i class="p" id="bAp"></i><i class="i" id="bAi"></i></div></div>
+          <div class="bar"><div class="lab"><span>바뀐 금리</span><b id="bBt"></b></div><div class="track"><i class="p" id="bBp"></i><i class="i" id="bBi"></i></div></div>
+          <div class="legend" aria-hidden="true"><span><i class="p"></i>원금</span><span><i class="i"></i>이자</span></div>
+        </div>
+        <p class="note">대출 시작 시점부터 바뀐 금리가 전 기간 적용된다고 가정한 단순 계산입니다. 실제 금액은 가산금리·중도상환·거치 기간에 따라 다릅니다.</p>
       </div>
     </div>
   </div>
@@ -165,21 +205,69 @@
 <script>
 const latest = document.getElementById('latest');
 VIDEOS.slice(0,4).forEach(v => latest.append(postCard(v)));
-// 계산기: 대출 금액(만원) × 금리 변화(0.01%p) → 1년 이자 차이
+// 계산기: 금액·현재 금리·금리 변화·기간·상환 방식 → 월 상환액·1년 이자·총 이자 비교
 (function(){
-  const a = document.getElementById('amt'), r = document.getElementById('rate');
-  const won = m => { const e = Math.floor(m/10000), rest = m%10000; return ((e?e+'억 ':'')+(rest?rest.toLocaleString()+'만 ':'')+'원'); };
-  const sign = n => n>0?'+':(n<0?'−':'');
-  function upd(){
-    const amt = +a.value, bp = +r.value;
-    const yr = Math.round(amt*bp/10000);                      // 만원
-    const mo = Math.round(Math.abs(amt*bp/12)/1000)*1000;     // 원 (천원 단위 반올림)
-    document.getElementById('amtV').textContent = won(amt);
-    document.getElementById('rateV').textContent = sign(bp)+Math.abs(bp/100).toFixed(2)+'%p';
-    document.getElementById('outN').textContent = sign(yr)+Math.abs(yr).toLocaleString()+'만원';
-    document.getElementById('outM').textContent = bp===0 ? '변화 없음' : '한 달에 약 '+mo.toLocaleString()+'원 '+(bp>0?'더':'덜');
+  const $ = id => document.getElementById(id);
+  const amt = $('amt'), base = $('base'), rate = $('rate');
+  const state = { years: 30, method: 'annuity' };
+
+  // 상환 스케줄을 한 달씩 돌려 첫 달 납입액·첫 1년 이자·총 이자를 구함 (P: 원, annual: 연 %)
+  function sim(P, annual, years, method){
+    const n = years*12, r = annual/100/12;
+    const fixed = r === 0 ? P/n : P*r/(1 - Math.pow(1+r, -n));
+    let bal = P, first = 0, y1 = 0, tot = 0;
+    for (let m = 1; m <= n; m++){
+      const int = bal*r;
+      const prin = method === 'annuity' ? fixed - int : method === 'principal' ? P/n : (m === n ? bal : 0);
+      if (m === 1) first = int + prin;
+      if (m <= 12) y1 += int;
+      tot += int; bal -= prin;
+    }
+    return { first, y1, tot };
   }
-  a.addEventListener('input', upd); r.addEventListener('input', upd); upd();
+  const sign = n => n > 0 ? '+' : (n < 0 ? '−' : '');
+  const won = x => Math.round(x).toLocaleString() + '원';
+  const big = x => { // 원 → '1억 2,345만원'
+    const man = Math.round(Math.abs(x)/10000), e = Math.floor(man/10000), rest = man%10000;
+    return e ? e + '억' + (rest ? ' ' + rest.toLocaleString() + '만' : '') + '원' : rest.toLocaleString() + '만원';
+  };
+  const diff = (d, f) => (Math.round(d) === 0 ? '' : sign(d)) + f(Math.abs(d));
+
+  function upd(){
+    const P = +amt.value*10000, r0 = +base.value/100, dr = +rate.value/100, r1 = Math.max(r0 + dr, 0);
+    const A = sim(P, r0, state.years, state.method), B = sim(P, r1, state.years, state.method);
+    const mo = Math.round((B.first - A.first)/10)*10;
+
+    $('amtV').textContent = big(P).replace(/원$/, ' 원');
+    $('baseV').textContent = '연 ' + r0.toFixed(2) + '%';
+    $('rateV').textContent = sign(dr) + Math.abs(dr).toFixed(2) + '%p';
+
+    $('outK').textContent = { annuity: '월 상환액 변화', principal: '첫 달 상환액 변화', bullet: '월 이자 변화' }[state.method];
+    $('outN').textContent = diff(mo, won);
+    $('outS').textContent = '지금 ' + won(A.first) + ' → ' + won(B.first);
+    $('rR').textContent = '연 ' + r0.toFixed(2) + '% → ' + r1.toFixed(2) + '%';
+    $('r1').textContent = diff(B.y1 - A.y1, big);
+    $('rTl').textContent = '총 이자 차이 (' + state.years + '년)';
+    $('rT').textContent = diff(B.tot - A.tot, big);
+
+    const max = P + Math.max(A.tot, B.tot);
+    [['A', A], ['B', B]].forEach(([k, s]) => {
+      $('b'+k+'t').textContent = big(P + s.tot);
+      $('b'+k+'p').style.width = (P/max*100) + '%';
+      $('b'+k+'i').style.width = (s.tot/max*100) + '%';
+    });
+  }
+
+  document.querySelectorAll('.calc .seg').forEach(seg => {
+    seg.addEventListener('click', e => {
+      const b = e.target.closest('.chip'); if (!b) return;
+      seg.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c === b));
+      state[seg.dataset.key] = seg.dataset.key === 'years' ? +b.dataset.v : b.dataset.v;
+      upd();
+    });
+  });
+  [amt, base, rate].forEach(el => el.addEventListener('input', upd));
+  upd();
 })();
 
 const copyBtn = document.getElementById('copy-mail');
