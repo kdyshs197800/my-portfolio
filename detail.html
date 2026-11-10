@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>콘텐츠 — 티커</title>
+<meta name="description" content="티커가 영상으로 다룬 경제 이슈를 글로 다시 정리한 페이지입니다.">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
 <link rel="stylesheet" href="site.css">
 <script>try{if(localStorage.getItem('theme')==='light')document.documentElement.dataset.theme='light';}catch(e){}</script>
@@ -55,6 +56,7 @@ if(idx < 0){
 } else {
   const v = VIDEOS[idx];
   document.title = v.title + ' — 티커';
+  document.querySelector('meta[name="description"]').content = v.desc.split(/\n/)[0];
 
   const meta = el('div','meta');
   const time = el('time',null,fmtDate(v.date));

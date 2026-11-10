@@ -1,6 +1,6 @@
-# 내 스타일 가이드 — 티커 (home.html 기준)
+# 내 스타일 가이드 — 티커 (index.html 기준)
 
-> 값은 `site.css`와 일치합니다. home.html · contents.html · detail.html이 함께 씁니다.
+> 값은 `site.css`와 일치합니다. index.html · contents.html · detail.html · login.html이 함께 씁니다.
 
 ## 내 스타일 가이드
 - 포인트 색: #fcef00 노랑(유튜브 썸네일 "금 · 11만 원" 글자색, 2026-11-10 변경 — 화이트 모드 글자 #736800, 테두리 #9a8f00) (버튼·라벨(eyebrow)·카테고리·hover 테두리·제목 강조 한 줄, 한 화면에 채운 골드 버튼은 1개)

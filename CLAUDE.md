@@ -6,6 +6,15 @@
 
 ## 파일 구조
 
+- `index.html` — 최종 사이트 메인 (히어로 · 이자 계산기 · About · 최근 콘텐츠 · Contact)
+- `contents.html`(콘텐츠 목록), `detail.html?v=영상ID`(글 상세), `login.html`(운영자 로그인) — 모두 `site.css` · `site.js` 공유
+- `site.css` — 색·글자·간격 등 공통 스타일 (색 변수 `--gold` · `--gold-text` · `--gold-line`)
+- `data/videos.js`(영상 목록), `data/scripts.js`(영상 대본) — 새 영상은 `videos.js` 맨 위에 추가
+- `my-style-guide.md` — 디자인 규칙 1순위 문서
+- `img/` — 사진·일러스트 (`ticker-hero.svg` 메인 캐릭터, `svg-candidates/` 아이콘)
+
+수업 단계 자료 (참고용):
+
 - `templates-index.html` — 스타일 4종 비교 허브 (여기서 먼저 골라볼 것)
 - `style-a-minimal.html`, `style-b-colorful.html`, `style-c-grid.html`, `style-d-dark.html` — 스타일 4종 각각의 메인 화면
 - `img/` — 4개 스타일이 공유하는 사진 폴더 (`visual.jpg`, `profile.jpg`, `project-1.jpg`, `project-2.jpg`, `project-3.jpg`)
@@ -41,5 +50,5 @@
 ## 다음 작업
 
 - 사이트는 GitHub Pages로 공개 중: https://kdyshs197800.github.io/my-portfolio/ (`main`에 푸시하면 1~2분 뒤 반영)
-- 정리 후보: `home -.html`(복사본으로 보임), 예전 시안 파일(`시안_숫자중심.html`, `홈페이지-1·2.html` 등)
+- 정리 후보: 예전 시안 파일(`시안_숫자중심.html`, `홈페이지-1·2.html` 등)
 - `design-style.md`에는 체크리스트가 없음(스타일 C 설명만 있음) — 남은 할 일은 이 목록에 적습니다.
