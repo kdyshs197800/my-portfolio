@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>시안 — 숫자가 주인공</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="site.css">
+<script>try{if(localStorage.getItem('theme')==='light')document.documentElement.dataset.theme='light';}catch(e){}</script>
+<style>
+  /* 시안 전용 — 컨셉: 친근한 신뢰 · 숫자가 주인공 · 캐릭터 브랜딩 */
+  .test-badge{position:fixed;left:16px;bottom:16px;z-index:60;font-size:12px;font-weight:800;background:var(--gold);color:var(--navy);border-radius:var(--r-pill);padding:4px 12px}
+
+  /* 히어로: 은은한 별빛 배경(Kurzgesagt 무드) + 숫자 카드(토스식) */
+  .nh{position:relative;overflow:hidden;padding:96px 0 112px;background:
+      radial-gradient(600px 360px at 85% 20%,rgba(242,162,12,.14),transparent 70%),
+      radial-gradient(2px 2px at 12% 30%,var(--line-strong),transparent),
+      radial-gradient(2px 2px at 40% 80%,var(--line-strong),transparent),
+      radial-gradient(2px 2px at 64% 16%,var(--line-strong),transparent),
+      radial-gradient(2px 2px at 90% 72%,var(--line-strong),transparent)}
+  .nh .shell{display:grid;grid-template-columns:repeat(12,1fr);gap:48px;align-items:center}
+  .nh .copy{grid-column:span 7}
+  .nh .art{grid-column:span 5;position:relative}
+  .nh h1{font-size:clamp(32px,5vw,56px);font-weight:800;letter-spacing:-.03em;line-height:1.25;margin-top:16px}
+  .nh h1 em{font-style:normal;color:var(--gold-text)}
+  .nh .lead{font-size:18px;color:var(--text-soft);margin-top:24px;max-width:520px}
+  .nh .cta-row{display:flex;flex-wrap:wrap;gap:16px;margin-top:40px}
+  .nh .art img{width:100%;max-width:400px;margin:0 auto;border-radius:var(--r-card)}
+
+  /* 숫자 영수증 카드 */
+  .receipt{margin-top:40px;border:1px solid var(--line-strong);border-radius:var(--r-card);padding:24px;background:var(--navy-2);max-width:520px}
+  .receipt .q{font-size:14px;color:var(--text-soft)}
+  .receipt .big{display:flex;align-items:baseline;gap:8px;margin-top:8px}
+  .receipt .big b{font-size:clamp(40px,6vw,64px);font-weight:800;letter-spacing:-.03em;line-height:1.1;color:var(--gold-text);font-variant-numeric:tabular-nums}
+  .receipt .big span{font-size:20px;font-weight:700}
+  .receipt .row{display:flex;justify-content:space-between;font-size:14px;border-top:1px dashed var(--line-strong);margin-top:16px;padding-top:16px;color:var(--text-body)}
+
+  /* 티커 말풍선 — 섹션 안내자 */
+  .say{display:flex;gap:16px;align-items:flex-start;margin-top:24px}
+  .say .face{flex:none;width:48px;height:48px}
+  .say p{position:relative;font-size:14px;line-height:1.6;border:1px solid var(--line-strong);border-radius:var(--r-card);padding:12px 16px;color:var(--text-body)}
+  .say p b{color:var(--gold-text)}
+
+  /* 계산기 */
+  .calc{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+  .calc .panel{grid-column:span 7;border:1px solid var(--line);border-radius:var(--r-card);padding:32px}
+  .calc .out{grid-column:span 5;border:1px solid var(--gold);border-radius:var(--r-card);padding:32px;display:flex;flex-direction:column;justify-content:center}
+  .calc label{display:block;font-size:14px;font-weight:700;margin-top:24px}
+  .calc label:first-child{margin-top:0}
+  .calc .val{float:right;color:var(--gold-text);font-variant-numeric:tabular-nums}
+  .calc input[type=range]{width:100%;margin-top:8px;accent-color:#f2a20c}
+  .calc .out .k{font-size:14px;color:var(--text-soft)}
+  .calc .out .n{font-size:clamp(40px,5vw,56px);font-weight:800;letter-spacing:-.03em;line-height:1.2;color:var(--gold-text);font-variant-numeric:tabular-nums;margin-top:8px}
+  .calc .out .m{font-size:16px;color:var(--text-body);margin-top:8px}
+  .calc .out .note{font-size:12px;color:var(--text-soft);margin-top:16px}
+
+  /* 숫자 카드 6개 */
+  .ncards{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+  .nc{grid-column:span 4;border:1px solid var(--line);border-radius:var(--r-card);padding:32px;transition:border-color .2s}
+  .nc:hover{border-color:var(--gold)}
+  .nc .k{font-size:12px;font-weight:800;letter-spacing:.2em;color:var(--text-soft)}
+  .nc .num{font-size:32px;font-weight:800;letter-spacing:-.02em;color:var(--gold-text);margin-top:16px;line-height:1.2}
+  .nc .num small{font-size:16px;color:var(--text);margin-left:4px}
+  .nc h3{font-size:18px;font-weight:800;margin-top:8px}
+  .nc p{font-size:14px;color:var(--text-soft);margin-top:8px}
+  .nc.wide{grid-column:span 8}
+
+  @media(max-width:900px){
+    .nh .copy,.nh .art,.calc .panel,.calc .out,.nc,.nc.wide{grid-column:span 12}
+    .nh{padding:64px 0 80px}
+    .nh .art img{max-width:280px}
+  }
+</style>
+</head>
+<body>
+<span class="test-badge">테스트 시안</span>
+
+<header class="site">
+  <div class="shell">
+    <a href="index.html" class="logo">리빙팡팡 | 티커의 경제학</a>
+    <div class="head-right">
+      <nav class="main">
+        <a href="#home">Home</a>
+        <a href="#calc">Calc</a>
+        <a href="#about">About</a>
+      </nav>
+      <button type="button" class="theme-toggle" id="theme-toggle" role="switch" aria-checked="false" aria-label="화이트 모드" title="화이트 모드"><span class="ico moon" aria-hidden="true">네이비</span><span class="track"><span class="knob"></span></span><span class="ico sun" aria-hidden="true">화이트</span></button>
+    </div>
+  </div>
+</header>
+
+<!-- 1. 히어로: 질문 → 숫자 한 장 -->
+<section class="nh" id="home">
+  <div class="shell">
+    <div class="copy">
+      <div class="eyebrow">TICKER'S ECONOMICS</div>
+      <h1>뉴스는 한 줄,<br>내 통장엔 <em>숫자</em>로.</h1>
+      <p class="lead">금리·세금·지원금이 바뀔 때마다 티커가 "그래서 나는 얼마?"를 먼저 계산해 드립니다.</p>
+      <div class="receipt" aria-label="이번 주 계산 예시">
+        <div class="q">이번 주 계산 · 기준금리 0.25%p 오르면</div>
+        <div class="big"><b>+50만원</b><span>/ 년</span></div>
+        <div class="row"><span>대출 2억 원 · 변동금리 기준</span><span>이자 증가분</span></div>
+      </div>
+      <div class="cta-row">
+        <a href="contents.html" class="btn btn-gold">내 숫자 확인하기 →</a>
+        <a href="https://www.youtube.com/@리빙팡팡?sub_confirmation=1" target="_blank" rel="noopener" class="btn btn-line">유튜브 구독 ↗</a>
+      </div>
+    </div>
+    <div class="art">
+      <img src="img/ticker-hero.svg" alt="동전 탑을 양손에 들고 계단 앞에 선 티커 캐릭터">
+    </div>
+  </div>
+</section>
+
+<!-- 2. 계산기: 숫자가 주인공 -->
+<section class="sec" id="calc">
+  <div class="shell">
+    <div class="sec-head">
+      <div class="eyebrow">CALCULATOR</div>
+      <h2>직접 넣어 보세요</h2>
+      <div class="say">
+        <img class="face" src="img/svg-candidates/logo-ticker.svg" alt="티커">
+        <p>대출 금액과 금리 변화만 넣으면 <b>1년 이자 차이</b>를 바로 보여 드려요.</p>
+      </div>
+    </div>
+    <div class="calc">
+      <div class="panel">
+        <label for="amt">대출 금액 <span class="val" id="amtV">2억 원</span></label>
+        <input type="range" id="amt" min="1000" max="50000" step="1000" value="20000">
+        <label for="rate">금리 변화 <span class="val" id="rateV">+0.25%p</span></label>
+        <input type="range" id="rate" min="-100" max="100" step="25" value="25">
+      </div>
+      <div class="out" aria-live="polite">
+        <div class="k">1년 이자 차이</div>
+        <div class="n" id="outN">+50만원</div>
+        <div class="m" id="outM">한 달에 약 4만 2천원</div>
+        <div class="note">단순 계산(원금 그대로 가정)입니다. 실제 이자는 상환 방식·가산금리에 따라 다릅니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. 주제 카드: 대표 숫자 하나씩 -->
+<section class="sec" id="about">
+  <div class="shell">
+    <div class="sec-head">
+      <div class="eyebrow">ABOUT</div>
+      <h2>주제마다, 숫자 하나로 시작합니다</h2>
+      <div class="say">
+        <img class="face" src="img/svg-candidates/logo-ticker.svg" alt="티커">
+        <p>카드의 숫자는 <b>시안용 예시</b>예요. 실제로는 그 주제 최신 영상의 숫자가 들어갑니다.</p>
+      </div>
+    </div>
+    <div class="ncards">
+      <a class="nc wide"><div class="k">HOME</div><div class="num">+50만원<small>/년</small></div><h3>대출 · 전세 · 내 집 마련</h3><p>기준금리 0.25%p, 대출 2억이면 이자가 이만큼 늘어요.</p></a>
+      <a class="nc"><div class="k">BUSINESS</div><div class="num">00%<small>예시</small></div><h3>티커의 수익구조 연구</h3><p>매일 내는 돈, 누구 손에 얼마 갈까?</p></a>
+      <a class="nc"><div class="k">TAX</div><div class="num">00만원<small>예시</small></div><h3>세금 · 연말정산</h3><p>놓치면 안 돌려받는 공제.</p></a>
+      <a class="nc"><div class="k">MARKET</div><div class="num">0.0%<small>예시</small></div><h3>주식 · 증시 · 투자</h3><p>코스피, 환율, ETF, 금.</p></a>
+      <a class="nc"><div class="k">BENEFIT</div><div class="num">00만원<small>예시</small></div><h3>지원금 · 정부 혜택</h3><p>신청해야만 받는 돈.</p></a>
+      <a class="nc wide"><div class="k">SAVE</div><div class="num">00만원<small>/년 예시</small></div><h3>생활비 · 보험 · 통신비 절약</h3><p>고정비 한 줄 바꾸면 1년에 이만큼.</p></a>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="shell">
+    <div class="fbrand">리빙팡팡 | 티커의 경제학</div>
+    <p class="fnote">영상은 정보 제공용이며 투자 권유가 아닙니다. 제도·금리·세율은 영상 게시 시점 기준이니 신청·계약 전에 공식 안내를 확인해 주세요.</p>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+<script>
+(function(){
+  var a=document.getElementById('amt'), r=document.getElementById('rate');
+  function won(m){ // m: 만원 단위
+    var s=Math.abs(m), e=Math.floor(s/10000), rest=s%10000;
+    return (e?e+'억 ':'')+(rest?rest.toLocaleString()+'만 ':'')+'원';
+  }
+  function upd(){
+    var amt=+a.value, bp=+r.value; // 만원, 0.01%p
+    var yr=Math.round(amt*bp/10000);          // 만원
+    var mo=amt*bp/10000/12;                   // 만원
+    var sign=yr>0?'+':(yr<0?'−':'');
+    document.getElementById('amtV').textContent=won(amt).replace(/ 원$/,' 원').trim();
+    document.getElementById('rateV').textContent=(bp>0?'+':(bp<0?'−':''))+Math.abs(bp/100).toFixed(2)+'%p';
+    document.getElementById('outN').textContent=sign+Math.abs(yr).toLocaleString()+'만원';
+    var moW=Math.round(Math.abs(mo)*10000/1000)*1000;
+    document.getElementById('outM').textContent=bp===0?'변화 없음':'한 달에 약 '+moW.toLocaleString()+'원 '+(bp>0?'더':'덜');
+  }
+  a.addEventListener('input',upd); r.addEventListener('input',upd); upd();
+})();
+</script>
+</body>
+</html>
