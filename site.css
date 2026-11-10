@@ -66,6 +66,8 @@ nav.main a:hover,nav.main a.on{color:var(--text)}
 .hero-photo{position:relative;aspect-ratio:4/5;overflow:hidden}
 .hero-photo img{width:100%;height:100%;object-fit:cover;object-position:center top}
 .hero-photo::after{content:'';position:absolute;left:0;right:0;bottom:0;height:35%;background:linear-gradient(180deg,transparent,var(--bg))}
+:root[data-theme="light"] .hero-photo{border-radius:var(--r-card);background:var(--navy)} /* 화이트 모드: 그림의 어두운 배경이 번져 보이지 않게 네이비 카드로 감쌈 */
+:root[data-theme="light"] .hero-photo::after{background:linear-gradient(180deg,transparent,var(--navy))}
 
 /* ---------- about ---------- */
 .about-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:24px}
@@ -119,7 +121,7 @@ nav.main a:hover,nav.main a.on{color:var(--text)}
 .tags a:hover{border-color:var(--gold-line)}
 .player{position:relative;display:block;width:100%;aspect-ratio:16/9;border-radius:var(--r-card);overflow:hidden;background:var(--navy-2);border:0;padding:0;cursor:pointer}
 .player img,.player iframe{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border:0}
-.player .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:50%;background:var(--gold);color:var(--navy);display:flex;align-items:center;justify-content:center;font-size:26px;padding-left:5px}
+.player .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:50%;background:var(--navy);color:var(--gold);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:26px;padding-left:5px} /* 채운 노랑은 '유튜브에서 보기' 버튼 하나만 — 재생 버튼은 네이비 + 노랑 아이콘 */
 .article .cta-row{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0 48px}
 .prose p{font-size:16px;color:var(--text-body);margin-bottom:16px}
 .prose ul{list-style:none;background:var(--navy-2);border-radius:var(--r-card);padding:32px;margin:32px 0}
