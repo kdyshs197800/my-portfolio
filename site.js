@@ -47,25 +47,12 @@ function postCard(v){
 
 /* 유튜브 플레이어 — 썸네일을 누르면 재생. 파일을 직접 연 경우(file://)엔 유튜브가 재생을 막아 새 탭으로 엽니다 */
 function videoPlayer(v){
-  const player = el('button','player');
-  player.type = 'button';
-  player.setAttribute('aria-label','영상 재생');
+  /* 썸네일만 보여줍니다 — 클릭해도 유튜브로 가지 않음 (영상은 아래 '유튜브에서 보기' 버튼으로) */
+  const player = el('div','player');
   const img = el('img');
-  img.src = 'https://i.ytimg.com/vi/' + v.id + '/maxresdefault.jpg'; img.alt = '';
+  img.src = 'https://i.ytimg.com/vi/' + v.id + '/maxresdefault.jpg'; img.alt = v.title + ' 썸네일';
   img.onerror = ()=>{ img.onerror = null; img.src = thumbUrl(v.id); };
-  player.append(img, el('span','play','▶'));
-  player.addEventListener('click', ()=>{
-    if(!location.protocol.startsWith('http')){ window.open(watchUrl(v.id),'_blank','noopener'); return; }
-    const f = el('iframe');
-    f.src = 'https://www.youtube.com/embed/' + v.id + '?autoplay=1';
-    f.title = v.title;
-    f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-    f.allowFullscreen = true;
-    const box = el('div','player');
-    box.style.cursor = 'default';
-    box.append(f);
-    player.replaceWith(box);
-  });
+  player.append(img);
   return player;
 }
 

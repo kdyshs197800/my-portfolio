@@ -72,18 +72,14 @@ if(idx < 0){
   cta.append(yt);
   article.append(cta);
 
-  /* 영상 설명에서 목차(0:00)와 그 뒤 안내 문구를 뽑아 둡니다 */
-  const toc = [], noticeLines = [];
-  let afterChapters = false;
+  /* 영상 설명에서 목차(0:00)를 뽑아 둡니다 */
+  const toc = [];
   v.desc.split('\n').forEach(raw=>{
     const line = raw.trim();
     if(!line) return;
     const ch = line.match(/^((?:\d{1,2}:)?\d{1,2}:\d{2})\s+(.+)$/);
-    if(ch){ toc.push({time:ch[1], sec:ch[1].split(':').reduce((s,n)=> s*60 + Number(n), 0), title:ch[2]}); afterChapters = true; return; }
-    if(afterChapters) noticeLines.push(line);
+    if(ch) toc.push({time:ch[1], sec:ch[1].split(':').reduce((s,n)=> s*60 + Number(n), 0), title:ch[2]});
   });
-  const notice = el('div','notice');
-  noticeLines.forEach(line => notice.append(el('p',null,line)));
 
   const script = (typeof SCRIPTS !== 'undefined') && SCRIPTS[v.id];
   if(script){
@@ -149,7 +145,6 @@ if(idx < 0){
     article.append(tags);
   }
   article.append(subscribeBox());
-  if(notice.children.length) article.append(notice);
 
   /* 이전 · 다음 글 (목록은 최신순) */
   const pager = el('nav','pager');
