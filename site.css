@@ -2,7 +2,7 @@
 /* 규칙: my-style-guide.md — 모서리 18px/999px, 간격 8단위, 글자 12·13·14·16·18·20·24·32px */
 :root{
   --navy:#1c1b42; --navy-2:#24234f; --navy-3:#2e2d5c;
-  --gold:#d4af37; --gold-text:#d4af37; /* 메탈릭 골드(실제 금빛) — 네이비 대비 7.77 : 1 */
+  --gold:#fcef00; --gold-text:#fcef00; /* 썸네일 "금 · 11만 원" 노랑 — 네이비 대비 13.61 : 1 */
   --bg:#1c1b42;
   --text:#ffffff; --text-soft:rgba(255,255,255,.68); --text-body:rgba(255,255,255,.86);
   --line:rgba(255,255,255,.12); --line-strong:rgba(255,255,255,.4); --line-hover:rgba(255,255,255,.55); /* line-strong: 입력칸·테두리 버튼 선, 배경 대비 3.71 : 1 */
@@ -13,6 +13,7 @@
 /* 화이트 모드 — 헤더의 토글 버튼이 <html data-theme="light">를 붙이면 적용 (네이비는 버튼 글자색 등에 그대로 씀) */
 :root[data-theme="light"]{
   --bg:#ffffff; --navy-2:#f4f4f8; --navy-3:#eaeaf2;
+  --gold:#d4af37; /* 흰 바탕에선 노랑이 1.2 : 1이라 메탈릭 골드로 */
   --gold-text:#866a1c; /* 글자용 진한 금색 — 흰 바탕 5.13 : 1, 카드(#f4f4f8) 4.68 : 1 (채우기·테두리는 --gold 그대로) */
   --text:#1c1b42; --text-soft:rgba(28,27,66,.68); --text-body:rgba(28,27,66,.86);
   --line:rgba(28,27,66,.12); --line-strong:rgba(28,27,66,.55); --line-hover:rgba(28,27,66,.7); /* 흰 바탕 대비 3.77 : 1 */

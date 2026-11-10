@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="주식·증시·투자">
-<g fill="none" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 56h48"/><path d="M14 16v32"/><path d="M20 30v12M30 22v16M40 26v10M50 14v14"/></g>
-<rect x="17.5" y="33" width="5" height="6" rx="1" fill="#D4AF37"/><rect x="27.5" y="26" width="5" height="8" rx="1" fill="#D4AF37"/><rect x="37.5" y="28" width="5" height="5" rx="1" fill="#D4AF37"/><rect x="47.5" y="17" width="5" height="8" rx="1" fill="#D4AF37"/>
-<g fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 48l12-8 10 4 14-12"/><path d="M48 32h6v6"/></g>
+<g fill="none" stroke="#FCEF00" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 56h48"/><path d="M14 16v32"/><path d="M20 30v12M30 22v16M40 26v10M50 14v14"/></g>
+<rect x="17.5" y="33" width="5" height="6" rx="1" fill="#FCEF00"/><rect x="27.5" y="26" width="5" height="8" rx="1" fill="#FCEF00"/><rect x="37.5" y="28" width="5" height="5" rx="1" fill="#FCEF00"/><rect x="47.5" y="17" width="5" height="8" rx="1" fill="#FCEF00"/>
+<g fill="none" stroke="#FCEF00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 48l12-8 10 4 14-12"/><path d="M48 32h6v6"/></g>
 </svg>
