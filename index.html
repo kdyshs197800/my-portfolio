@@ -106,7 +106,7 @@
           <div class="bar"><div class="lab"><span>바뀐 금리</span><b id="bBt"></b></div><div class="track"><i class="p" id="bBp"></i><i class="i" id="bBi"></i></div></div>
           <div class="legend" aria-hidden="true"><span><i class="p"></i>원금</span><span><i class="i"></i>이자</span></div>
         </div>
-        <p class="note">대출 시작 시점부터 바뀐 금리가 전 기간 적용된다고 가정한 단순 계산입니다. 실제 금액은 가산금리·중도상환·거치 기간에 따라 다릅니다.</p>
+        <p class="note">대출 시작 시점부터 바뀐 금리가 전 기간 적용된다고 가정한 단순 계산입니다. 실제 금액은 가산금리, 중도상환, 거치 기간에 따라 다릅니다.</p>
       </div>
     </div>
   </div>
@@ -238,6 +238,7 @@ VIDEOS.slice(0,4).forEach(v => latest.append(postCard(v)));
     const A = sim(P, r0, state.years, state.method), B = sim(P, r1, state.years, state.method);
     const mo = Math.round((B.first - A.first)/10)*10;
 
+    [amt, base, rate].forEach(el => el.style.setProperty('--fill', (el.value - el.min)/(el.max - el.min)*100 + '%'));
     $('amtV').textContent = big(P).replace(/원$/, ' 원');
     $('baseV').textContent = '연 ' + r0.toFixed(2) + '%';
     $('rateV').textContent = sign(dr) + Math.abs(dr).toFixed(2) + '%p';
