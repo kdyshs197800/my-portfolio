@@ -33,9 +33,10 @@ a{color:inherit;text-decoration:none}
 .sec-head h1,.sec-head h2{font-size:clamp(28px,3.6vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1.3;margin-top:12px}
 .sec-head p{font-size:16px;color:var(--text-soft);max-width:560px;margin-top:16px}
 
+/* 알약(999px) 테두리는 사이트 전체 3px — 버튼(테두리형)·칩·해시태그·입력칸. 카드·박스는 1px 그대로 */
 .btn{display:inline-flex;align-items:center;gap:8px;font-size:16px;font-weight:700;padding:16px 24px;border-radius:var(--r-pill);border:0;cursor:pointer;font-family:inherit}
-.btn-gold{background:var(--gold);color:var(--navy)}
-.btn-line{border:1px solid var(--line-strong);color:var(--text)}
+.btn-gold{background:var(--gold);color:var(--navy);border:3px solid var(--gold)} /* 같은 색 3px 테두리 — 옆 테두리 버튼과 높이를 맞춤 */
+.btn-line{border:3px solid var(--line-strong);color:var(--text)}
 .btn-line:hover{border-color:var(--text)}
 
 /* ---------- header ---------- */
@@ -105,7 +106,7 @@ nav.main a:hover,nav.main a.on{color:var(--text)}
 
 .page-top{padding:72px 0 112px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
-.chip{font-family:inherit;font-size:14px;font-weight:700;color:var(--text-soft);background:none;border:1px solid var(--line);padding:8px 16px;border-radius:var(--r-pill);cursor:pointer}
+.chip{font-family:inherit;font-size:14px;font-weight:700;color:var(--text-soft);background:none;border:3px solid var(--line);padding:8px 16px;border-radius:var(--r-pill);cursor:pointer}
 .chip:hover{color:var(--text);border-color:var(--gold-line)}
 .chip.on{background:var(--gold);border-color:var(--gold);color:var(--navy)}
 .chip small{font-size:12px;font-weight:700;margin-left:4px} /* 투명도 없이 — 골드 칩 위 7.77 : 1 */
@@ -119,7 +120,7 @@ nav.main a:hover,nav.main a.on{color:var(--text)}
 .article .meta .cat{color:var(--gold-text)}
 .article h1{font-size:clamp(26px,3.8vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1.35;margin:12px 0 32px}
 .tags{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin-top:24px}
-.tags a{display:block;font-size:13px;font-weight:700;color:var(--gold-text);border:1px solid var(--line);border-radius:var(--r-pill);padding:4px 12px;transition:border-color .2s}
+.tags a{display:block;font-size:13px;font-weight:700;color:var(--gold-text);border:3px solid var(--line);border-radius:var(--r-pill);padding:4px 12px;transition:border-color .2s}
 .tags a:hover{border-color:var(--gold-line)}
 .player{position:relative;display:block;width:100%;aspect-ratio:16/9;border-radius:var(--r-card);overflow:hidden;background:var(--navy-2);border:0;padding:0}
 .player img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border:0}
@@ -169,7 +170,7 @@ nav.main a:hover,nav.main a.on{color:var(--text)}
 .auth-box{display:flex;flex-direction:column;gap:24px;background:var(--navy-2);border:1px solid var(--line);border-radius:var(--r-card);padding:40px}
 .field{display:flex;flex-direction:column;gap:8px}
 .field span{font-size:14px;font-weight:700}
-.field input{font-family:inherit;font-size:16px;color:var(--text);background:var(--bg);border:1px solid var(--line-strong);border-radius:var(--r-pill);padding:12px 24px;outline:none;transition:border-color .2s}
+.field input{font-family:inherit;font-size:16px;color:var(--text);background:var(--bg);border:3px solid var(--line-strong);border-radius:var(--r-pill);padding:12px 24px;outline:none;transition:border-color .2s}
 .field input::placeholder{color:var(--text-soft)}
 .field input:focus{border-color:var(--gold-line)}
 .auth-msg{font-size:14px;color:var(--gold-text);min-height:24px;margin:-8px 0}
