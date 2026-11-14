@@ -27,28 +27,6 @@
 .calc .out .asof{font-size:12px;font-weight:700;color:var(--text-soft)}
 .calc .out .note .t{display:block;font-weight:800;color:var(--text-body)}
 #calcSay b{white-space:normal} /* 계산기 설명은 강조 문구가 길어서 줄바꿈 허용 (keep-all이라 단어 중간은 안 잘림) */
-/* 900px 이하: 헤더를 한 줄(로고 | 메뉴 버튼)로 줄이고, 메뉴·토글·로그인은 버튼을 누르면 아래로 펼침 — 3줄 150px → 64px */
-.logo{white-space:nowrap}
-.menu-btn{display:none}
-section[id]{scroll-margin-top:72px} /* 메뉴로 이동했을 때 고정 헤더에 제목·라벨이 가리지 않게 */
-@media(max-width:900px){section[id]{scroll-margin-top:64px}}
-@media(max-width:900px){
-  header.site .shell,header.site .shell[class]{height:64px;padding-top:0;padding-bottom:0;flex-direction:row;gap:16px}
-  .logo{font-size:18px}
-  .menu-btn{display:inline-flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;width:44px;height:44px;flex:none;background:none;border:1px solid var(--line-strong);border-radius:var(--r-pill);cursor:pointer;transition:border-color .2s}
-  .menu-btn:hover,.menu-btn:focus-visible{border-color:var(--gold-line);outline:none}
-  .menu-btn span{display:block;width:16px;height:2px;border-radius:var(--r-pill);background:var(--text);transition:transform .2s,opacity .2s}
-  header.site.open .menu-btn span:nth-child(1){transform:translateY(6px) rotate(45deg)}
-  header.site.open .menu-btn span:nth-child(2){opacity:0}
-  header.site.open .menu-btn span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-  .head-right,.head-right[class]{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:16px;padding:8px 24px 24px;background:var(--bg);border-bottom:1px solid var(--line)}
-  header.site.open .head-right{display:flex}
-  nav.main,nav.main[class]{flex-direction:column;gap:0}
-  nav.main a,nav.main[class] a{font-size:16px;padding:12px 0;border-bottom:1px solid var(--line)}
-  .head-right .theme-toggle{align-self:flex-start}
-  .head-right .btn-sm{align-self:flex-start;font-size:14px;padding:8px 16px}
-}
-@media(min-width:901px) and (max-width:1100px){nav.main,.head-right{gap:24px}}
 @media(max-width:560px){
   .calc-pick .cat .chip{font-size:13px;padding:8px 12px}
   .calc-pick .sub{gap:8px 24px}
@@ -646,19 +624,5 @@ copyBtn.addEventListener('click', ()=>{
 });
 </script>
 
-<script>
-/* 휴대폰 메뉴 버튼: 누르면 펼치고, 메뉴를 고르거나 Esc를 누르면 닫음 */
-(function(){
-  const head = document.querySelector('header.site'), btn = document.getElementById('menu-btn');
-  function setOpen(on){
-    head.classList.toggle('open', on);
-    btn.setAttribute('aria-expanded', on);
-    btn.setAttribute('aria-label', on ? '메뉴 닫기' : '메뉴 열기');
-  }
-  btn.addEventListener('click', () => setOpen(!head.classList.contains('open')));
-  document.querySelectorAll('nav.main a').forEach(a => a.addEventListener('click', () => setOpen(false)));
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && head.classList.contains('open')) { setOpen(false); btn.focus(); } });
-})();
-</script>
 </body>
 </html>

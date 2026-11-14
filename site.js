@@ -69,3 +69,17 @@ function videoPlayer(v){
   setTheme(document.documentElement.dataset.theme === 'light');
   btn.addEventListener('click', ()=> setTheme(document.documentElement.dataset.theme !== 'light'));
 })();
+
+/* 휴대폰 메뉴 버튼: 누르면 펼치고, 메뉴를 고르거나 Esc를 누르면 닫음 */
+(function(){
+  const head = document.querySelector('header.site'), btn = document.getElementById('menu-btn');
+  if(!head || !btn) return;
+  function setOpen(on){
+    head.classList.toggle('open', on);
+    btn.setAttribute('aria-expanded', on);
+    btn.setAttribute('aria-label', on ? '메뉴 닫기' : '메뉴 열기');
+  }
+  btn.addEventListener('click', () => setOpen(!head.classList.contains('open')));
+  document.querySelectorAll('nav.main a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && head.classList.contains('open')) { setOpen(false); btn.focus(); } });
+})();
