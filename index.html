@@ -7,6 +7,91 @@
 <meta name="description" content="연말정산·대출·지원금·주식, 내 돈과 관련된 경제 이슈를 숫자로 풀어 드립니다. 영상으로 다룬 이야기를 글로도 읽을 수 있는 공간.">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
 <link rel="stylesheet" href="site.css">
+<style>
+/* 계산기 여러 개 — 이 시안 파일에서만 쓰는 추가 스타일 (확정되면 site.css로 옮김) */
+/* 계산기 고르기 — 2단 탭: 위 = 분류 알약 4개, 아래 = 고른 분류의 계산기 (글자 + 노란 밑줄) */
+.calc-pick{margin-bottom:24px}
+.calc-pick .cat{display:flex;flex-wrap:wrap;gap:8px}
+.calc-pick .cat .chip[aria-pressed="true"]{border-color:var(--gold-line);color:var(--gold-text);font-weight:800;background:color-mix(in srgb,var(--gold) 14%,transparent)}
+.calc-pick .sub{display:flex;flex-wrap:wrap;gap:8px 32px;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.calc-pick .sub button{font-family:inherit;font-size:16px;font-weight:700;color:var(--text-soft);background:none;border:0;border-bottom:3px solid transparent;padding:4px 0;cursor:pointer;transition:color .2s,border-color .2s}
+.calc-pick .sub button:hover{color:var(--text)}
+.calc-pick .sub button[aria-pressed="true"]{color:var(--gold-text);font-weight:800;border-bottom-color:var(--gold-line)}
+.calc-pick .sub button:focus-visible{outline:2px solid var(--gold-line);outline-offset:4px}
+/* 마우스 올림도 노란 테두리(사이트 전체 알약 hover와 같음). 선택된 칩은 노란 글자 + 굵은 글씨로 구분 */
+.calc-pick .cat .chip:hover:not([aria-pressed="true"]),.calc .seg .chip:hover:not([aria-pressed="true"]){border-color:var(--gold-line);color:var(--text)}
+.calc .out .vlink{align-self:flex-start}
+.calc .out .vlink[hidden]{display:none}
+.calc .out .notes{display:grid;gap:8px;border-top:1px dashed var(--line-strong);padding-top:16px}
+.calc .out .note b{color:var(--text-body)}
+.calc .out .asof{font-size:12px;font-weight:700;color:var(--text-soft)}
+.calc .out .note .t{display:block;font-weight:800;color:var(--text-body)}
+#calcSay b{white-space:normal} /* 계산기 설명은 강조 문구가 길어서 줄바꿈 허용 (keep-all이라 단어 중간은 안 잘림) */
+/* 900px 이하: 헤더를 한 줄(로고 | 메뉴 버튼)로 줄이고, 메뉴·토글·로그인은 버튼을 누르면 아래로 펼침 — 3줄 150px → 64px */
+.logo{white-space:nowrap}
+.menu-btn{display:none}
+section[id]{scroll-margin-top:72px} /* 메뉴로 이동했을 때 고정 헤더에 제목·라벨이 가리지 않게 */
+@media(max-width:900px){section[id]{scroll-margin-top:64px}}
+@media(max-width:900px){
+  header.site .shell,header.site .shell[class]{height:64px;padding-top:0;padding-bottom:0;flex-direction:row;gap:16px}
+  .logo{font-size:18px}
+  .menu-btn{display:inline-flex;flex-direction:column;justify-content:center;align-items:center;gap:4px;width:44px;height:44px;flex:none;background:none;border:1px solid var(--line-strong);border-radius:var(--r-pill);cursor:pointer;transition:border-color .2s}
+  .menu-btn:hover,.menu-btn:focus-visible{border-color:var(--gold-line);outline:none}
+  .menu-btn span{display:block;width:16px;height:2px;border-radius:var(--r-pill);background:var(--text);transition:transform .2s,opacity .2s}
+  header.site.open .menu-btn span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+  header.site.open .menu-btn span:nth-child(2){opacity:0}
+  header.site.open .menu-btn span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+  .head-right,.head-right[class]{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:16px;padding:8px 24px 24px;background:var(--bg);border-bottom:1px solid var(--line)}
+  header.site.open .head-right{display:flex}
+  nav.main,nav.main[class]{flex-direction:column;gap:0}
+  nav.main a,nav.main[class] a{font-size:16px;padding:12px 0;border-bottom:1px solid var(--line)}
+  .head-right .theme-toggle{align-self:flex-start}
+  .head-right .btn-sm{align-self:flex-start;font-size:14px;padding:8px 16px}
+}
+@media(min-width:901px) and (max-width:1100px){nav.main,.head-right{gap:24px}}
+@media(max-width:560px){
+  .calc-pick .cat .chip{font-size:13px;padding:8px 12px}
+  .calc-pick .sub{gap:8px 24px}
+  .calc-pick .sub button{font-size:14px}
+  .seg[data-n="2"]{grid-template-columns:repeat(2,1fr)}
+  .seg[data-n="3"]{grid-template-columns:repeat(3,1fr)}
+  .seg[data-n="5"]{grid-template-columns:repeat(5,1fr)}
+  .seg.long{grid-template-columns:1fr}
+}
+/* 2D 티커 히어로: 그림 배경(네이비)과 사이트 배경이 달라 생기는 네모 경계를 좌우·위쪽 페이드로 지움 (아래쪽은 .hero-photo::after) */
+.hero-photo img{
+  -webkit-mask-image:linear-gradient(90deg,transparent,black 14%,black 86%,transparent),linear-gradient(180deg,transparent,black 16%);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(90deg,transparent,black 14%,black 86%,transparent),linear-gradient(180deg,transparent,black 16%);
+  mask-composite:intersect;
+}
+/* About 첫 줄 — 히어로(글자 | 그림)와 지그재그로 (그림 | 글자). 배너에서 티커가 있는 오른쪽만 잘라 씀.
+   그림은 네이비 카드 안에 넣고 가장자리를 카드색으로 흐림: 네이비 모드에선 배경에 녹고, 화이트 모드에선 네이비 카드로 보임 */
+.about-intro{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;margin-bottom:48px}
+.about-intro .sec-head{margin-bottom:0}
+.about-art{aspect-ratio:4/3;background:var(--navy);border-radius:var(--r-card);overflow:hidden}
+.about-art img{width:100%;height:100%;object-fit:cover;object-position:right center;
+  -webkit-mask-image:linear-gradient(90deg,transparent,black 12%,black 92%,transparent),linear-gradient(180deg,transparent,black 10%,black 88%,transparent);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(90deg,transparent,black 12%,black 92%,transparent),linear-gradient(180deg,transparent,black 10%,black 88%,transparent);
+  mask-composite:intersect}
+@media(max-width:900px){
+  .about-intro{grid-template-columns:1fr;gap:24px}
+  .about-art{max-width:480px;width:100%}
+}
+/* 섹션 구분선 위아래 간격 줄이기 (site.css 112px / 80px → 56px / 48px, 선 사이 총 224 → 112px) */
+.sec{padding:56px 0}
+@media(max-width:900px){ .sec{padding:48px 0} }
+/* 히어로 아래 간격 줄이기 — 데스크톱: 그림을 4:5 → 1:1로 줄이고(위쪽 빈 하늘을 조금 잘라 냄) 아래 페이드도 35 → 25%로.
+   화이트 모드의 아래 여백 80px도 없애 네이비 모드와 같게. 휴대폰: 버튼 바로 밑에 붙던 구분선 앞에 48px(섹션 여백과 같은 값) */
+.hero,:root[data-theme="light"] .hero{padding-bottom:0}
+@media(min-width:901px){
+  .hero-photo{aspect-ratio:1/1}
+  .hero-photo img{object-position:center 12%}
+}
+.hero-photo::after{height:25%}
+@media(max-width:900px){ .hero,:root[data-theme="light"] .hero{padding-bottom:48px} }
+</style>
 <script>try{if(localStorage.getItem('theme')==='light')document.documentElement.dataset.theme='light';}catch(e){}</script>
 </head>
 <body>
@@ -14,11 +99,12 @@
 <header class="site">
   <div class="shell">
     <a href="index.html" class="logo">리빙팡팡 | 티커의 경제학</a>
-    <div class="head-right">
-      <nav class="main">
+    <button type="button" class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="head-menu" aria-label="메뉴 열기"><span></span><span></span><span></span></button>
+    <div class="head-right" id="head-menu">
+      <nav class="main" aria-label="주 메뉴">
         <a href="#home">Home</a>
-        <a href="#calc">Calc</a>
         <a href="#about">About</a>
+        <a href="#calc">Calculator</a>
         <a href="contents.html">Contents</a>
         <a href="#contact">Contact</a>
       </nav>
@@ -40,84 +126,22 @@
       </div>
     </div>
     <div class="hero-photo">
-      <img src="img/ticker-hero.svg" alt="동전 탑을 양손에 들고 계단 앞에 선 티커 캐릭터">
-    </div>
-  </div>
-</section>
-
-<section class="sec" id="calc">
-  <div class="shell">
-    <div class="sec-head">
-      <div class="eyebrow">CALCULATOR</div>
-      <h2>직접 넣어 보세요</h2>
-      <div class="say">
-        <img class="face" src="img/svg-candidates/logo-ticker.svg" alt="티커">
-        <p>금액·금리·기간·상환 방식을 고르면 <b>월 상환액과 총 이자</b>가 얼마나 달라지는지 바로 계산해 드려요.</p>
-      </div>
-    </div>
-    <div class="calc">
-      <div class="panel">
-        <div>
-          <label for="amt">대출 금액 <span class="val" id="amtV">3억 원</span></label>
-          <input type="range" id="amt" min="1000" max="100000" step="1000" value="30000">
-          <div class="scale" aria-hidden="true"><span>1천만 원</span><span>10억 원</span></div>
-        </div>
-        <div>
-          <label for="base">현재 금리 <span class="val" id="baseV">연 4.00%</span></label>
-          <input type="range" id="base" min="200" max="800" step="5" value="400">
-          <div class="scale" aria-hidden="true"><span>2%</span><span>8%</span></div>
-        </div>
-        <div>
-          <label for="rate">금리 변화 <span class="val" id="rateV">+0.25%p</span></label>
-          <input type="range" id="rate" min="-100" max="200" step="25" value="25">
-          <div class="scale" aria-hidden="true"><span>−1%p</span><span>+2%p</span></div>
-        </div>
-        <fieldset>
-          <legend>대출 기간</legend>
-          <div class="seg" data-key="years">
-            <button type="button" class="chip" data-v="10" aria-pressed="false">10년</button>
-            <button type="button" class="chip" data-v="20" aria-pressed="false">20년</button>
-            <button type="button" class="chip" data-v="30" aria-pressed="true">30년</button>
-            <button type="button" class="chip" data-v="40" aria-pressed="false">40년</button>
-          </div>
-        </fieldset>
-        <fieldset>
-          <legend>상환 방식</legend>
-          <div class="seg" data-key="method">
-            <button type="button" class="chip" data-v="annuity" aria-pressed="true">원리금균등</button>
-            <button type="button" class="chip" data-v="principal" aria-pressed="false">원금균등</button>
-            <button type="button" class="chip" data-v="bullet" aria-pressed="false">만기일시</button>
-          </div>
-        </fieldset>
-      </div>
-      <div class="out">
-        <div aria-live="polite">
-          <div class="k" id="outK">월 상환액 변화</div>
-          <div class="n" id="outN">+0원</div>
-          <div class="sub" id="outS"></div>
-        </div>
-        <dl class="rows">
-          <div><dt>적용 금리</dt><dd id="rR"></dd></div>
-          <div><dt>첫 1년 이자 차이</dt><dd id="r1"></dd></div>
-          <div><dt id="rTl">총 이자 차이</dt><dd id="rT"></dd></div>
-        </dl>
-        <div class="bars" aria-label="총 상환액 비교">
-          <div class="bar"><div class="lab"><span>지금 금리</span><b id="bAt"></b></div><div class="track"><i class="p" id="bAp"></i><i class="i" id="bAi"></i></div></div>
-          <div class="bar"><div class="lab"><span>바뀐 금리</span><b id="bBt"></b></div><div class="track"><i class="p" id="bBp"></i><i class="i" id="bBi"></i></div></div>
-          <div class="legend" aria-hidden="true"><span><i class="p"></i>원금</span><span><i class="i"></i>이자</span></div>
-        </div>
-        <p class="note">대출 시작 시점부터 바뀐 금리가 전 기간 적용된다고 가정한 단순 계산입니다. 실제 금액은 가산금리, 중도상환, 거치 기간에 따라 다릅니다.</p>
-      </div>
+      <img src="img/ticker-hero-2d.jpg" alt="한 손을 흔들며 LP 방패 배지를 든 티커 캐릭터">
     </div>
   </div>
 </section>
 
 <section class="sec" id="about">
   <div class="shell">
-    <div class="sec-head">
-      <div class="eyebrow">ABOUT</div>
-      <h2>티커, 라는 조언자</h2>
-      <p>종목 코드를 뜻하는 티커에서 이름을 가져왔습니다. 내 돈과 관련된 경제 이슈를 사례와 계산으로 풀어, 신청 기한이 있는 혜택과 바뀌는 제도를 놓치지 않게 알려 드립니다.</p>
+    <div class="about-intro">
+      <figure class="about-art">
+        <img src="img/ticker-banner.jpg" width="1376" height="768" loading="lazy" alt="태블릿으로 상승 차트를 보며 웃는 티커, 주변에 금화">
+      </figure>
+      <div class="sec-head">
+        <div class="eyebrow">ABOUT</div>
+        <h2>티커, 라는 조언자</h2>
+        <p>종목 코드를 뜻하는 티커에서 이름을 가져왔습니다. 내 돈과 관련된 경제 이슈를 사례와 계산으로 풀어, 신청 기한이 있는 혜택과 바뀌는 제도를 놓치지 않게 알려 드립니다.</p>
+      </div>
     </div>
     <div class="about-grid">
       <a href="contents.html?cat=biz" class="topic">
@@ -158,6 +182,37 @@
       </div>
       <div class="days" aria-label="업로드 요일: 화, 목, 토, 일">
         <span class="day">월</span><span class="day on">화</span><span class="day">수</span><span class="day on">목</span><span class="day">금</span><span class="day on">토</span><span class="day on">일</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="calc">
+  <div class="shell">
+    <div class="sec-head">
+      <div class="eyebrow">CALCULATOR</div>
+      <h2>직접 넣어 보세요</h2>
+      <div class="say">
+        <img class="face" src="img/svg-candidates/logo-ticker-2d.svg" alt="티커">
+        <p id="calcSay"></p>
+      </div>
+    </div>
+    <div class="calc-pick" id="calcPick">
+      <div class="cat" id="calcCat" role="group" aria-label="계산기 분류"></div>
+      <div class="sub" id="calcSub" role="group" aria-label="계산기 고르기"></div>
+    </div>
+    <div class="calc">
+      <div class="panel" id="calcPanel"></div>
+      <div class="out">
+        <div aria-live="polite">
+          <div class="k" id="outK"></div>
+          <div class="n" id="outN"></div>
+          <div class="sub" id="outS"></div>
+        </div>
+        <dl class="rows" id="outRows"></dl>
+        <div class="bars" id="outBars"></div>
+        <div class="notes" id="outNote"></div>
+        <a class="btn btn-line btn-sm vlink" id="outVideo" target="_blank" rel="noopener">이 내용 영상으로 보기 ↗</a>
       </div>
     </div>
   </div>
@@ -205,13 +260,27 @@
 <script>
 const latest = document.getElementById('latest');
 VIDEOS.slice(0,4).forEach(v => latest.append(postCard(v)));
-// 계산기: 금액·현재 금리·금리 변화·기간·상환 방식 → 월 상환액·1년 이자·총 이자 비교
+// 계산기 9종 — 위 칩으로 고르면 입력칸(panel)과 결과(out)가 바뀝니다.
+// 새 계산기는 CALCS 배열에 한 덩어리를 추가하면 됩니다. 수치 출처는 각 영상 설명란 (2026-11 기준)
 (function(){
   const $ = id => document.getElementById(id);
-  const amt = $('amt'), base = $('base'), rate = $('rate');
-  const state = { years: 30, method: 'annuity' };
+  const sign = n => n > 0 ? '+' : (n < 0 ? '−' : '');
+  // 원 → '1억 2,345만 6,700원' (unit 단위로 반올림, 부호 없음)
+  const krw = (x, unit = 1) => {
+    x = Math.round(Math.abs(x)/unit)*unit;
+    const e = Math.floor(x/1e8), m = Math.floor(x%1e8/1e4), w = x%1e4, out = [];
+    if (e) out.push(e + '억');
+    if (m) out.push(m.toLocaleString() + '만');
+    if (w || !out.length) out.push(w.toLocaleString());
+    return out.join(' ') + '원';
+  };
+  const sk = (x, unit) => (Math.round(x/unit) === 0 ? '' : sign(x)) + krw(x, unit); // 부호 붙인 금액
+  const pct = (x, d = 1) => (x*100).toFixed(d) + '%';
+  const man = v => krw(v*1e4); // 슬라이더 값(만원) 표시
+  const bar = (lab, val, parts) => ({ lab, val, parts });
+  const yt = id => 'https://www.youtube.com/watch?v=' + id;
 
-  // 상환 스케줄을 한 달씩 돌려 첫 달 납입액·첫 1년 이자·총 이자를 구함 (P: 원, annual: 연 %)
+  // 대출 상환 스케줄을 한 달씩 돌려 첫 달 납입액·첫 1년 이자·총 이자 (P: 원, annual: 연 %)
   function sim(P, annual, years, method){
     const n = years*12, r = annual/100/12;
     const fixed = r === 0 ? P/n : P*r/(1 - Math.pow(1+r, -n));
@@ -225,50 +294,347 @@ VIDEOS.slice(0,4).forEach(v => latest.append(postCard(v)));
     }
     return { first, y1, tot };
   }
-  const sign = n => n > 0 ? '+' : (n < 0 ? '−' : '');
-  const won = x => Math.round(x).toLocaleString() + '원';
-  const big = x => { // 원 → '1억 2,345만원'
-    const man = Math.round(Math.abs(x)/10000), e = Math.floor(man/10000), rest = man%10000;
-    return e ? e + '억' + (rest ? ' ' + rest.toLocaleString() + '만' : '') + '원' : rest.toLocaleString() + '만원';
-  };
-  const diff = (d, f) => (Math.round(d) === 0 ? '' : sign(d)) + f(Math.abs(d));
 
-  function upd(){
-    const P = +amt.value*10000, r0 = +base.value/100, dr = +rate.value/100, r1 = Math.max(r0 + dr, 0);
-    const A = sim(P, r0, state.years, state.method), B = sim(P, r1, state.years, state.method);
-    const mo = Math.round((B.first - A.first)/10)*10;
+  const CALCS = [
+  /* ---------- 0. 대출 금리 변화 (기존) ---------- */
+  { id:'loan', tab:'대출 금리', group:'대출',
+    say:'금액·금리·기간·상환 방식을 고르면 <b>월 상환액과 총 이자</b>가 얼마나 달라지는지 바로 계산해 드려요.',
+    inputs:[
+      {key:'amt', label:'대출 금액', min:1000, max:100000, step:1000, value:30000, show:man, scale:['1천만 원','10억 원']},
+      {key:'base', label:'현재 금리', min:200, max:800, step:5, value:400, show:v => '연 ' + (v/100).toFixed(2) + '%', scale:['2%','8%']},
+      {key:'rate', label:'금리 변화', min:-100, max:200, step:25, value:25, show:v => sign(v) + Math.abs(v/100).toFixed(2) + '%p', scale:['−1%p','+2%p']},
+      {key:'years', label:'대출 기간', type:'seg', value:'30', opts:[['10','10년'],['20','20년'],['30','30년'],['40','40년']]},
+      {key:'method', label:'상환 방식', type:'seg', value:'annuity', opts:[['annuity','원리금균등'],['principal','원금균등'],['bullet','만기일시']]}
+    ],
+    calc(s){
+      const P = s.amt*1e4, r0 = s.base/100, r1 = Math.max(r0 + s.rate/100, 0), y = +s.years;
+      const A = sim(P, r0, y, s.method), B = sim(P, r1, y, s.method), max = P + Math.max(A.tot, B.tot);
+      return {
+        k:{ annuity:'월 상환액 변화', principal:'첫 달 상환액 변화', bullet:'월 이자 변화' }[s.method],
+        n:sk(B.first - A.first, 10),
+        sub:'지금 ' + krw(A.first, 10) + ' → ' + krw(B.first, 10),
+        rows:[['적용 금리', '연 ' + r0.toFixed(2) + '% → ' + r1.toFixed(2) + '%'],
+              ['첫 1년 이자 차이', sk(B.y1 - A.y1, 1e4)],
+              ['총 이자 차이 (' + y + '년)', sk(B.tot - A.tot, 1e4)]],
+        bars:[bar('지금 금리', krw(P + A.tot, 1e4), [['p', P/max], ['i', A.tot/max]]),
+              bar('바뀐 금리', krw(P + B.tot, 1e4), [['p', P/max], ['i', B.tot/max]])],
+        legend:[['p','원금'],['i','이자']],
+        excl:'가산금리 변동 · 중도상환 · 거치 기간',
+        note:'바뀐 금리가 대출 시작부터 끝까지 똑같이 적용된다고 가정했습니다.'
+      };
+    }
+  },
 
-    [amt, base, rate].forEach(el => el.style.setProperty('--fill', (el.value - el.min)/(el.max - el.min)*100 + '%'));
-    $('amtV').textContent = big(P).replace(/원$/, ' 원');
-    $('baseV').textContent = '연 ' + r0.toFixed(2) + '%';
-    $('rateV').textContent = sign(dr) + Math.abs(dr).toFixed(2) + '%p';
+  /* ---------- 1. 금리인하요구권 ---------- */
+  { id:'cut', tab:'금리인하요구권', group:'대출', video:'UvxT29sXPfQ', date:'2026.11.10',
+    say:'대출 잔액과 금리를 넣고 인하 폭을 고르면 <b>1년에 줄어드는 이자</b>를 계산해 드려요. 2억 5000만 원이면 0.3%p만 깎여도 연 75만 원이에요.',
+    inputs:[
+      {key:'amt', label:'대출 잔액', min:1000, max:100000, step:1000, value:25000, show:man, scale:['1천만 원','10억 원']},
+      {key:'base', label:'지금 금리', min:200, max:800, step:1, value:488, show:v => '연 ' + (v/100).toFixed(2) + '%', scale:['2%','8%']},
+      {key:'cut', label:'인하 폭', type:'seg', value:'0.3', opts:[['0.1','0.1%p'],['0.2','0.2%p'],['0.3','0.3%p'],['0.5','0.5%p'],['1','1%p']]}
+    ],
+    calc(s){
+      const P = s.amt*1e4, r0 = s.base/100, r1 = Math.max(r0 - s.cut, 0);
+      const y0 = P*r0/100, y1 = P*r1/100, save = y0 - y1;
+      return {
+        k:'1년 이자 절감', n:krw(save, 10), sub:'월 ' + krw(save/12, 10) + '씩 덜 냄',
+        rows:[['적용 금리', '연 ' + r0.toFixed(2) + '% → ' + r1.toFixed(2) + '%'],
+              ['3년 동안 절감', krw(save*3, 1e4)],
+              ['올해 상반기 수용률', '19.1% (5명 중 1명)']],
+        bars:[bar('지금 1년 이자', krw(y0, 1e4), [['p', 1]]),
+              bar('인하 후 1년 이자', krw(y1, 1e4), [['i', y0 ? y1/y0 : 0]])],
+        excl:'원금 상환 (잔액 × 금리로 단순 계산)',
+        note:'거절 사유의 85%가 <b>"신용도 개선 경미"</b>였습니다. 취업·승진·소득 증가·신용점수 상승 직후에 신청하세요. 실제 인하 여부와 폭은 은행 심사에 따라 다릅니다.'
+      };
+    }
+  },
 
-    $('outK').textContent = { annuity: '월 상환액 변화', principal: '첫 달 상환액 변화', bullet: '월 이자 변화' }[state.method];
-    $('outN').textContent = diff(mo, won);
-    $('outS').textContent = '지금 ' + won(A.first) + ' → ' + won(B.first);
-    $('rR').textContent = '연 ' + r0.toFixed(2) + '% → ' + r1.toFixed(2) + '%';
-    $('r1').textContent = diff(B.y1 - A.y1, big);
-    $('rTl').textContent = '총 이자 차이 (' + state.years + '년)';
-    $('rT').textContent = diff(B.tot - A.tot, big);
+  /* ---------- 2. 미국주식 환율 손익 ---------- */
+  { id:'usd', tab:'미국주식 환율', group:'투자', video:'qdSTtrdWYSg', date:'2026.11.09',
+    say:'산 날 환율과 오늘 환율을 넣으면 <b>주가가 그대로여도 원화로 얼마가 달라지는지</b> 나눠서 보여 드려요.',
+    inputs:[
+      {key:'amt', label:'투자한 돈', min:100, max:10000, step:100, value:1000, show:man, scale:['100만 원','1억 원']},
+      {key:'buy', label:'살 때 환율', min:1100, max:1700, step:0.1, value:1554.9, show:v => (+v).toLocaleString(undefined,{minimumFractionDigits:1}) + '원', scale:['1,100원','1,700원']},
+      {key:'now', label:'지금 환율', min:1100, max:1700, step:0.1, value:1323.1, show:v => (+v).toLocaleString(undefined,{minimumFractionDigits:1}) + '원', scale:['1,100원','1,700원']},
+      {key:'g', label:'주가 변화 (달러 기준)', min:-50, max:100, step:1, value:0, show:v => sign(v) + Math.abs(v) + '%', scale:['−50%','+100%']}
+    ],
+    calc(s){
+      const P = s.amt*1e4, g = s.g/100, ratio = s.now/s.buy;
+      const value = P*(1+g)*ratio, tot = value - P, stock = P*g, fx = P*(1+g)*(ratio - 1);
+      const tax = tot > 250e4 ? (tot - 250e4)*0.22 : 0, max = Math.max(P, value);
+      return {
+        k:'원화로 본 손익', n:sk(tot, 1e4),
+        sub:Math.round(P/s.buy).toLocaleString() + '달러어치 → 지금 ' + krw(value, 1e4),
+        rows:[['주가 손익', sk(stock, 1e4)],
+              ['환율 손익', sk(fx, 1e4)],
+              value < P ? ['본전까지 주가가 더', '+' + pct(1/(ratio*(1+g)) - 1) + ' 올라야'] : ['본전', '넘음'],
+              ['팔면 낼 세금 (250만 원 공제 후 22%)', tax ? krw(tax, 1e4) : '없음']],
+        bars:[bar('넣은 돈', krw(P, 1e4), [['p', P/max]]),
+              bar('지금 평가액', krw(value, 1e4), [['i', value/max]])],
+        excl:'매매·환전 수수료',
+        note:'영상 예시: 7월 1일 1554.9원에 1000만 원 → 10월 26일 1323.1원이면 주가가 그대로여도 약 851만 원(−14.9%). 손실이 났다고 늦게 환헤지 상품으로 갈아타면 환율 반등분을 놓칠 수 있습니다.'
+      };
+    }
+  },
 
-    const max = P + Math.max(A.tot, B.tot);
-    [['A', A], ['B', B]].forEach(([k, s]) => {
-      $('b'+k+'t').textContent = big(P + s.tot);
-      $('b'+k+'p').style.width = (P/max*100) + '%';
-      $('b'+k+'i').style.width = (s.tot/max*100) + '%';
+  /* ---------- 3. 금 사는 곳 비교 ---------- */
+  { id:'gold', tab:'금 사는 곳', group:'투자', video:'hsvRVJq6xt4', date:'2026.10.12',
+    say:'같은 돈으로 금을 사도 <b>어디서 사느냐에 따라 팔 때 손에 쥐는 돈</b>이 달라져요. 4곳을 한 번에 비교해 드려요.',
+    inputs:[
+      {key:'amt', label:'금에 넣는 돈', min:100, max:10000, step:100, value:1000, show:man, scale:['100만 원','1억 원']},
+      {key:'g', label:'금값 변화', min:-30, max:50, step:1, value:10, show:v => sign(v) + Math.abs(v) + '%', scale:['−30%','+50%']}
+    ],
+    calc(s){
+      const P = s.amt*1e4, g = s.g/100, taxed = v => v > P ? v - (v - P)*0.154 : v;
+      const list = [
+        ['금은방·골드바', P*0.86*(1+g)],                 // 부가세 10% + 수수료 → 살 때·팔 때 약 14% 차이
+        ['KRX 금시장', P*0.997*0.997*(1+g)],            // 수수료 0.3%씩, 매매차익 비과세
+        ['골드뱅킹(금 통장)', taxed(P*0.99*0.99*(1+g))], // 수수료 1%씩 + 차익 15.4%
+        ['국내 금 ETF', taxed(P*(1+g)*0.995)]            // 운용보수 0.5%(1년) + 차익 15.4%
+      ];
+      const sorted = list.slice().sort((a, b) => b[1] - a[1]), max = sorted[0][1];
+      return {
+        k:'KRX 금시장이 금은방보다', n:sk(list[1][1] - list[0][1], 1e4),
+        sub:'금은방 ' + krw(list[0][1], 1e4) + ' vs KRX ' + krw(list[1][1], 1e4),
+        rows:[['가장 많이 남는 곳', sorted[0][0]],
+              ['가장 적게 남는 곳', sorted[3][0]],
+              ['금은방 본전까지 금값', '+' + pct(1/0.86 - 1, 0) + ' 올라야']],
+        bars:list.map(([n, v]) => bar(n, krw(v, 1e4), [[v === max ? 'i' : 'p', v/max]])),
+        excl:'KRX 실물 인출 시 부가세 10% · 환율 변동',
+        note:'1년 보유 뒤 판다고 가정했습니다. 금은방 왕복 약 14%, KRX 수수료 0.3%씩(비과세), 골드뱅킹 수수료 1%씩 + 차익 15.4%, 금 ETF 보수 0.5% + 차익 15.4%.'
+      };
+    }
+  },
+
+  /* ---------- 4. 연금저축 건보료 ---------- */
+  { id:'nhis', tab:'연금저축 건보료', group:'연금·보험', video:'hXcgwyvXMhE', date:'2026.11.12',
+    say:'연금저축·IRP에도 건강보험료가 붙으면 <b>1년에 얼마를 더 내는지</b>, 부모님이 <b>피부양자 기준 2000만 원</b>을 넘는지 같이 봐 드려요.',
+    inputs:[
+      {key:'pm', label:'연금저축·IRP 월 수령액', min:0, max:200, step:5, value:100, show:man, scale:['0원','200만 원']},
+      {key:'pub', label:'국민연금 등 공적연금 월 수령액', min:0, max:300, step:5, value:0, show:man, scale:['0원','300만 원']},
+      {key:'ratio', label:'보험료 반영 비율 (미정)', type:'seg', value:'1', opts:[['0.5','50% 반영'],['1','전액 반영']]}
+    ],
+    calc(s){
+      const R = 0.0719, r = +s.ratio, priv = s.pm*1e4*12, pub = s.pub*1e4*12, sum = priv + pub;
+      const fee = priv*r*R, out = (pub*0.5 + priv*r)*R;
+      return {
+        k:'연금저축분 건보료 (1년)', n:krw(fee, 10), sub:'월 ' + krw(fee/12, 10) + ' · 지금은 0원',
+        rows:[['연금 합계 (1년)', krw(sum, 1e4)],
+              ['피부양자 기준 2000만 원', sum > 2000e4 ? '넘음 — 빠질 수 있음' : '이내 (' + krw(2000e4 - sum, 1e4) + ' 남음)'],
+              ['피부양자에서 빠지면 소득 보험료', sum > 2000e4 ? '연 ' + krw(out, 10) : '해당 없음']],
+        bars:[bar('50% 반영', krw(priv*0.5*R, 10), [[r === 0.5 ? 'i' : 'p', 0.5]]),
+              bar('전액 반영', krw(priv*R, 10), [[r === 1 ? 'i' : 'p', priv ? 1 : 0]])],
+        excl:'장기요양보험료 · 재산 보험료',
+        note:'<b>아직 확정되지 않은 검토안</b>입니다(2026년 11월 4일 국감 보고, 대상·시기·비율 미정). 보험료율 7.19%, 공적연금 50% 반영 가정. 서둘러 해지하면 기타소득세 16.5%가 붙습니다.'
+      };
+    }
+  },
+
+  /* ---------- 5. 국민연금 추납 ---------- */
+  { id:'nps', tab:'국민연금 추납', group:'연금·보험', video:'F_NKjZovO1I', date:'2026.11.11',
+    say:'채울 기간과 소득을 넣으면 <b>추납 보험료</b>와, 납부 시점에 따라 9.5%와 10%로 <b>얼마가 갈리는지</b> 계산해 드려요.',
+    inputs:[
+      {key:'inc', label:'기준 소득월액', min:100, max:600, step:10, value:300, show:man, scale:['100만 원','600만 원']},
+      {key:'mon', label:'채울 기간', min:1, max:119, step:1, value:24, show:v => v + '개월' + (v >= 12 ? ' (' + Math.floor(v/12) + '년' + (v%12 ? ' ' + v%12 + '개월' : '') + ')' : ''), scale:['1개월','119개월']},
+      {key:'when', label:'신청·납부 시점', type:'seg', long:true, value:'nov', opts:[['nov','11월 신청 · 11월 납부 (9.5%)'],['dec','12월 신청 · 12월 안에 납부 (9.5%)'],['jan','12월 신청 · 1월 납부 (10%)']]}
+    ],
+    calc(s){
+      const base = s.inc*1e4*s.mon, a = base*0.095, b = base*0.10, mine = s.when === 'jan' ? b : a;
+      return {
+        k:'추납 보험료 (' + (s.when === 'jan' ? '10%' : '9.5%') + ')', n:krw(mine, 10),
+        sub:s.when === 'jan' ? '9.5%였다면 ' + krw(b - a, 10) + ' 덜 냄' : '1월 납부(10%)보다 ' + krw(b - a, 10) + ' 아낌',
+        rows:[['9.5%로 낼 때', krw(a, 10)],
+              ['10%로 낼 때', krw(b, 10)],
+              ['60회 나눠 내면 월', '약 ' + krw(mine/60, 10) + ' + 이자']],
+        bars:[bar('9.5% (올해 납부)', krw(a, 1e4), [[s.when === 'jan' ? 'p' : 'i', a/b]]),
+              bar('10% (내년 납부)', krw(b, 1e4), [[s.when === 'jan' ? 'i' : 'p', 1]])],
+        excl:'분할 납부 이자 · 물가 연동',
+        note:'2025년 11월 25일부터 추납 보험료율은 <b>납부기한이 속한 달</b> 기준입니다. 12월에 신청해도 그달 안에 내면 9.5% — 공단(1355)에서 꼭 확인하세요. 낸 해 연말정산 공제를 받을 수 있습니다.'
+      };
+    }
+  },
+
+  /* ---------- 6. 실손보험 전환 ---------- */
+  { id:'ins', tab:'실손보험 전환', group:'연금·보험', video:'BlQKPYTrNek', date:'2026.11.05',
+    say:'1·2세대 실손을 5세대로 갈아타면 보험료는 줄지만 도수치료·비급여 주사는 못 받아요. <b>내 병원 이용으로는 이득인지</b> 계산해 드려요.',
+    inputs:[
+      {key:'a', label:'지금 실손 월 보험료', min:20000, max:300000, step:1, value:178489, show:v => krw(v), scale:['2만 원','30만 원']},
+      {key:'b', label:'5세대 전환 후 월 보험료 (3년 50% 할인)', min:5000, max:150000, step:10, value:21270, show:v => krw(v), scale:['5천 원','15만 원']},
+      {key:'c', label:'1년에 받는 도수치료·비급여 주사·MRI 보험금', min:0, max:500, step:10, value:0, show:man, scale:['0원','500만 원']}
+    ],
+    calc(s){
+      const save = (s.a - s.b)*12, lost = s.c*1e4, net = save - lost, max = Math.max(s.a*12, s.b*12 + lost);
+      return {
+        k:net >= 0 ? '갈아타면 1년에 아끼는 돈' : '갈아타면 1년에 손해', n:sk(net, 1e4),
+        sub:'보험료 절약 ' + krw(save, 1e4) + ' − 못 받는 보험금 ' + krw(lost, 1e4),
+        rows:[['손익분기 보험금', '연 ' + krw(save, 1e4) + '보다 많이 받으면 손해'],
+              ['3년(할인 기간) 합계', sk(net*3, 1e4)]],
+        bars:[bar('지금 실손 유지', krw(s.a*12, 1e4), [['p', s.a*12/max]]),
+              bar('5세대로 전환', krw(s.b*12 + lost, 1e4), [['p', s.b*12/max], ['i', lost/max]])],
+        legend:[['p','1년 보험료'],['i','직접 내게 되는 병원비']],
+        excl:'할인 3년 뒤 보험료 변화 (동결 가정)',
+        note:'금융당국 예시(60대 여성 월 17만 8489원 → 2만 1270원) 기준입니다. 5세대는 도수치료·체외충격파·비급여 주사제 미보장, 비중증 비급여 자기부담 50%. 전환 후 <b>6개월 안에는 철회</b>할 수 있습니다.'
+      };
+    }
+  },
+
+  /* ---------- 7. 내 돈은 어디로 (수익구조 연구) ---------- */
+  { id:'biz', tab:'내 돈은 어디로', group:'생활비', video:{ gas:'3XneTwSFzfc', cvs:'1zLE_MTD-7c' }, date:{ gas:'2026.11.07', cvs:'2026.11.08' },
+    say:'우리가 낸 돈이 <b>누구 손에 얼마씩</b> 가는지 티커가 장부를 열어 봤어요. 가게를 고르고 몇 번 결제하는지 넣어 보세요.',
+    inputs:[
+      {key:'shop', label:'가게', type:'seg', long:true, value:'gas', opts:[['gas','주유소 1만 원 주유'],['cvs','편의점 1+1 음료 2000원']]},
+      {key:'n', label:'결제 횟수', min:1, max:30, step:1, value:1, show:v => v + '번', scale:['1번','30번']}
+    ],
+    data:{
+      gas:{ unit:10000, owner:'주유소 사장님', parts:[['정유사 (기름값)',5320],['유류세',3420],['부가세',910],['카드사 수수료',150],['주유소 사장님',200]],
+            tip:[['하루 6000리터 주유소 기름 이익','월 약 70만 원 (0.2%)'],['같은 동네 50원 싼 곳이면','1년 약 6만 원 (1200리터)']] },
+      cvs:{ unit:2000, owner:'점주', parts:[['물건값 (제조사·물류)',1440],['편의점 본부',168],['인건비',167],['월세',93],['전기료',30],['폐기',15],['점주',87]],
+            tip:[['덤 한 병 값은','제조사·본부가 나눠 냄'],['덤을 버리면 한 병','약 1,333원 (2+1과 같은 값)']] }
+    },
+    calc(s){
+      const d = this.data[s.shop], tot = d.unit*s.n, own = d.parts.find(p => p[0] === d.owner)[1]*s.n, top = d.parts[0][1];
+      return {
+        k:d.owner + ' 손에 남는 돈', n:krw(own), sub:krw(tot) + ' 결제 중 ' + pct(own/tot),
+        rows:d.tip,
+        bars:d.parts.map(([n, v]) => bar(n, krw(v*s.n), [[n === d.owner ? 'i' : 'p', v/top]])),
+        excl:s.shop === 'gas' ? '실제 정유사 공급가 (공급가 상한 1784원으로 계산)' : '부가세 약 182원 (따로 떼지 않음)',
+        note:s.shop === 'gas'
+          ? '10월 넷째 주 전국 평균 휘발유 1855.7원, 카드 수수료 1.5% 기준입니다.'
+          : '평균 마진율 28%, 본부:점주 3:7(언론 보도 평균값) 기준입니다. 카드 수수료(약 23원)를 점주가 내면 점주 몫은 약 64원입니다.'
+      };
+    }
+  },
+
+  /* ---------- 8. 김장 비용 ---------- */
+  { id:'kimchi', tab:'김장 비용', group:'생활비', video:'CK7hfTRx3pU', date:'2026.11.06',
+    say:'김장 포기 수를 넣으면 <b>직접 담그기·절임배추·포장김치</b> 중 어느 쪽이 얼마인지 비교해 드려요.',
+    inputs:[
+      {key:'h', label:'배추', min:4, max:40, step:2, value:20, show:v => v + '포기', scale:['4포기','40포기']},
+      {key:'waste', label:'남는 김치', type:'seg', value:'0', opts:[['0','다 먹어요'],['0.25','4분의 1 버려요']]}
+    ],
+    calc(s){
+      const f = s.h/20, list = [
+        ['직접 담그기 (재료 다 구입)', 263929],
+        ['절임배추 + 양념 (사전예약 행사가)', 199600],
+        ['절임배추 + 양념 (2차 가격)', 211400],
+        ['절임배추 + 양념 (평창산)', 259600],
+        ['포장김치 (30만~40만 원 중간값)', 350000]
+      ].map(([n, v]) => [n, v*f]);
+      const min = Math.min(...list.map(x => x[1])), max = Math.max(...list.map(x => x[1])), w = +s.waste;
+      return {
+        k:'직접 담그면 재료비', n:krw(list[0][1], 10),
+        sub:'행사가 절임배추면 ' + krw(list[1][1], 10) + ' · ' + krw(list[0][1] - list[1][1], 10) + ' 아낌',
+        rows:[['버려지는 돈 (직접 담그기 기준)', w ? '약 ' + krw(list[0][1]*w, 1000) : '없음'],
+              ['올해 재료값', '배추 −10.3% · 새우젓 +32.5%']],
+        bars:list.map(([n, v]) => bar(n, krw(v, 10), [[v === min ? 'i' : 'p', v/max]])),
+        excl:'배송비 · 김장 도구 · 수고비',
+        note:'10월 16일 aT 소매가와 대형마트 사전예약가로 20포기 기준 금액을 포기 수에 비례해 계산했습니다. 행사가를 놓치면 직접 담그기와의 차이가 좁혀지고, 포장김치는 구매처에 따라 더 쌀 수도 있습니다.'
+      };
+    }
+  }
+  ];
+
+  // ---------- 화면 그리기 ----------
+  const panel = $('calcPanel');
+  const state = {};
+  CALCS.forEach(c => { state[c.id] = {}; c.inputs.forEach(i => state[c.id][i.key] = i.type === 'seg' ? i.value : +i.value); });
+  let cur = CALCS[0];
+
+  // 2단 탭: 위 = 분류(group), 아래 = 그 분류의 계산기. 분류마다 마지막으로 본 계산기를 기억함
+  const catBox = $('calcCat'), subBox = $('calcSub');
+  const groups = [...new Set(CALCS.map(c => c.group))];
+  const lastOf = {};
+  groups.forEach(g => {
+    lastOf[g] = CALCS.find(c => c.group === g).id;
+    const b = el('button', 'chip', g);
+    b.type = 'button'; b.dataset.g = g;
+    catBox.append(b);
+  });
+  function pickCalc(id){
+    cur = CALCS.find(c => c.id === id);
+    lastOf[cur.group] = id;
+    catBox.querySelectorAll('.chip').forEach(b => b.setAttribute('aria-pressed', b.dataset.g === cur.group));
+    subBox.textContent = '';
+    CALCS.filter(c => c.group === cur.group).forEach(c => {
+      const b = el('button', null, c.tab);
+      b.type = 'button'; b.dataset.id = c.id; b.setAttribute('aria-pressed', c === cur);
+      subBox.append(b);
     });
+    build();
+  }
+  catBox.addEventListener('click', e => { const b = e.target.closest('.chip'); if (b) pickCalc(lastOf[b.dataset.g]); });
+  subBox.addEventListener('click', e => { const b = e.target.closest('button'); if (b) pickCalc(b.dataset.id); });
+
+  function build(){
+    $('calcSay').innerHTML = cur.say;
+    panel.textContent = '';
+    cur.inputs.forEach(inp => {
+      const id = 'in-' + cur.id + '-' + inp.key, v = state[cur.id][inp.key];
+      if (inp.type === 'seg'){
+        const fs = el('fieldset'), lg = el('legend', null, inp.label), seg = el('div', 'seg' + (inp.long ? ' long' : ''));
+        seg.dataset.key = inp.key; seg.dataset.n = inp.opts.length;
+        inp.opts.forEach(([ov, ol]) => {
+          const c = el('button', 'chip', ol);
+          c.type = 'button'; c.dataset.v = ov; c.setAttribute('aria-pressed', ov === v);
+          seg.append(c);
+        });
+        fs.append(lg, seg); panel.append(fs);
+      } else {
+        const box = el('div'), lb = el('label'), val = el('span', 'val'), r = el('input'), sc = el('div', 'scale');
+        lb.htmlFor = id; lb.append(inp.label + ' ', val); val.id = id + '-v';
+        Object.assign(r, { type:'range', id, min:inp.min, max:inp.max, step:inp.step, value:v });
+        r.dataset.key = inp.key;
+        sc.setAttribute('aria-hidden', 'true'); sc.append(el('span', null, inp.scale[0]), el('span', null, inp.scale[1]));
+        box.append(lb, r, sc); panel.append(box);
+      }
+    });
+    upd();
   }
 
-  document.querySelectorAll('.calc .seg').forEach(seg => {
-    seg.addEventListener('click', e => {
-      const b = e.target.closest('.chip'); if (!b) return;
-      seg.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c === b));
-      state[seg.dataset.key] = seg.dataset.key === 'years' ? +b.dataset.v : b.dataset.v;
-      upd();
+  function upd(){
+    const s = state[cur.id];
+    cur.inputs.forEach(inp => {
+      if (inp.type === 'seg') return;
+      const r = $('in-' + cur.id + '-' + inp.key);
+      r.style.setProperty('--fill', (r.value - r.min)/(r.max - r.min)*100 + '%');
+      $(r.id + '-v').textContent = inp.show(s[inp.key]);
     });
+    const o = cur.calc(s);
+    $('outK').textContent = o.k; $('outN').textContent = o.n; $('outS').textContent = o.sub;
+    const rows = $('outRows'); rows.textContent = '';
+    o.rows.forEach(([dt, dd]) => { const d = el('div'); d.append(el('dt', null, dt), el('dd', null, dd)); rows.append(d); });
+    const bars = $('outBars'); bars.textContent = '';
+    o.bars.forEach(b => {
+      const w = el('div', 'bar'), lab = el('div', 'lab'), tr = el('div', 'track');
+      lab.append(el('span', null, b.lab), el('b', null, b.val));
+      b.parts.forEach(([cls, f]) => { const i = el('i', cls); i.style.width = Math.max(0, Math.min(1, f))*100 + '%'; tr.append(i); });
+      w.append(lab, tr); bars.append(w);
+    });
+    if (o.legend){
+      const lg = el('div', 'legend'); lg.setAttribute('aria-hidden', 'true');
+      o.legend.forEach(([cls, t]) => { const sp = el('span'); sp.append(el('i', cls), t); lg.append(sp); });
+      bars.append(lg);
+    }
+    const vid = cur.video && (typeof cur.video === 'string' ? cur.video : cur.video[s.shop]);
+    const date = cur.date && (typeof cur.date === 'string' ? cur.date : cur.date[s.shop]);
+    $('outNote').innerHTML =
+      '<p class="asof">' + (date ? '수치 기준 ' + date + ' 영상 · 공개 자료' : '공식으로 계산 · 금리는 직접 입력') + '</p>' +
+      '<p class="note"><span class="t">빼고 계산한 것</span>' + o.excl + '</p>' +
+      '<p class="note"><span class="t">알아둘 점</span>' + o.note + '</p>';
+    const a = $('outVideo'); a.hidden = !vid; if (vid) a.href = yt(vid);
+  }
+
+  panel.addEventListener('input', e => {
+    if (e.target.type !== 'range') return;
+    state[cur.id][e.target.dataset.key] = +e.target.value; upd();
   });
-  [amt, base, rate].forEach(el => el.addEventListener('input', upd));
-  upd();
+  panel.addEventListener('click', e => {
+    const b = e.target.closest('.seg .chip'); if (!b) return;
+    const seg = b.parentElement;
+    seg.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', c === b));
+    state[cur.id][seg.dataset.key] = b.dataset.v; upd();
+  });
+  pickCalc(CALCS[0].id);
 })();
 
 const copyBtn = document.getElementById('copy-mail');
@@ -280,5 +646,19 @@ copyBtn.addEventListener('click', ()=>{
 });
 </script>
 
+<script>
+/* 휴대폰 메뉴 버튼: 누르면 펼치고, 메뉴를 고르거나 Esc를 누르면 닫음 */
+(function(){
+  const head = document.querySelector('header.site'), btn = document.getElementById('menu-btn');
+  function setOpen(on){
+    head.classList.toggle('open', on);
+    btn.setAttribute('aria-expanded', on);
+    btn.setAttribute('aria-label', on ? '메뉴 닫기' : '메뉴 열기');
+  }
+  btn.addEventListener('click', () => setOpen(!head.classList.contains('open')));
+  document.querySelectorAll('nav.main a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && head.classList.contains('open')) { setOpen(false); btn.focus(); } });
+})();
+</script>
 </body>
 </html>
