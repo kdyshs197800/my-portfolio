@@ -150,6 +150,16 @@ nav.main a:hover,nav.main a.on{color:var(--text)}
 .chapters a:hover span{color:var(--text)}
 .chapters time{flex:none;width:52px;font-weight:800;color:var(--gold-text);font-variant-numeric:tabular-nums}
 .chapters span{color:var(--text-body)}
+/* 대본 읽기 도구 (detail.html) — 장별 목차 · 읽기 진행 막대 · 맨 위로 */
+.toc{margin:24px 0 8px}
+.toc a{font-size:14px;transition:color .2s}
+.toc a span{transition:color .2s}
+.toc a.on span{color:var(--gold-text);font-weight:800}
+.script h3{scroll-margin-top:96px}
+.read-bar{position:absolute;left:0;right:0;bottom:-1px;height:2px;pointer-events:none}
+.read-bar span{display:block;height:100%;background:var(--gold-line);transform:scaleX(0);transform-origin:left center}
+.to-top{position:fixed;right:24px;bottom:24px;z-index:40;background:var(--bg);font-size:14px;padding:8px 16px}
+.to-top[hidden]{display:none}
 /* 유튜브 구독 안내 (site.js subscribeBox) — 채운 골드는 '유튜브에서 보기' 하나라 구독 버튼은 테두리형 */
 .subscribe{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;margin-top:48px;background:var(--navy-2);border:1px solid var(--line);border-radius:var(--r-card);padding:32px}
 .subscribe > div{flex:1 1 320px}

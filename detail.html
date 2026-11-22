@@ -162,6 +162,60 @@ if(idx < 0){
   }
   article.append(pager);
 }
+
+/* ---------- 대본 읽기 도구: 읽는 시간 · 장별 목차(지금 읽는 장 강조) · 읽기 진행 막대 · 맨 위로 ---------- */
+(function(){
+  const prose = document.querySelector('.prose.script');
+  if(!prose) return;
+
+  /* 읽는 시간 — 한글 1분에 약 500자 기준 */
+  const chars = [...prose.querySelectorAll('p')].reduce((n, p) => n + p.textContent.replace(/\s/g,'').length, 0);
+  const meta = article.querySelector('.meta');
+  if(meta && chars) meta.append(el('span', null, '읽는 데 약 ' + Math.max(1, Math.round(chars/500)) + '분'));
+
+  /* 장별 목차 — 대본 제목 바로 아래. 누르면 그 장으로 이동 (시간 링크는 그대로 유튜브) */
+  const heads = [...prose.querySelectorAll('h3')];
+  const items = [];
+  if(heads.length > 1){
+    const nav = el('nav', 'chapters toc');
+    nav.setAttribute('aria-label', '대본 목차');
+    heads.forEach((h, i) => {
+      h.id = 'ch-' + i;
+      const t = h.querySelector('a'), name = h.querySelector('span');
+      const a = el('a'); a.href = '#ch-' + i;
+      a.append(el('time', null, t ? t.textContent : '—'), el('span', null, name ? name.textContent : ''));
+      nav.append(a); items.push(a);
+    });
+    prose.querySelector('.script-head').after(nav);
+  }
+
+  /* 읽기 진행 막대(헤더 바로 아래) + 맨 위로 버튼 */
+  const bar = el('div', 'read-bar'); bar.setAttribute('aria-hidden', 'true');
+  const fill = el('span'); bar.append(fill);
+  document.querySelector('header.site').append(bar);
+  const top = el('button', 'btn btn-line btn-sm to-top', '↑ 맨 위로');
+  top.type = 'button'; top.hidden = true;
+  top.addEventListener('click', () => { scrollTo({ top:0 }); document.querySelector('.back').focus({ preventScroll:true }); });
+  document.body.append(top);
+
+  let ticking = false;
+  function update(){
+    ticking = false;
+    const r = prose.getBoundingClientRect();
+    const p = Math.min(1, Math.max(0, (innerHeight*0.5 - r.top) / r.height)); // 화면 가운데가 본문 어디쯤인지
+    fill.style.transform = 'scaleX(' + p + ')';
+    top.hidden = scrollY < innerHeight;
+    let cur = -1;
+    heads.forEach((h, i) => { if(h.getBoundingClientRect().top <= innerHeight*0.4) cur = i; });
+    items.forEach((a, i) => {
+      a.classList.toggle('on', i === cur);
+      if(i === cur) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+    });
+  }
+  addEventListener('scroll', () => { if(!ticking){ ticking = true; requestAnimationFrame(update); } }, { passive:true });
+  addEventListener('resize', update);
+  update();
+})();
 </script>
 
 </body>
