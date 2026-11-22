@@ -83,3 +83,73 @@ function videoPlayer(v){
   document.querySelectorAll('nav.main a').forEach(a => a.addEventListener('click', () => setOpen(false)));
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && head.classList.contains('open')) { setOpen(false); btn.focus(); } });
 })();
+
+/* 스크롤 등장 효과 — 섹션 제목·카드가 화면에 들어올 때 아래에서 살짝 떠오릅니다.
+   '동작 줄이기'를 켠 기기에선 꺼지고, 페이지 스크립트가 카드를 다 그린 뒤(DOMContentLoaded) 대상을 찾습니다 */
+document.addEventListener('DOMContentLoaded', function(){
+  if(!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const groups = ['.sec .sec-head', '.about-art', '.about-grid > *', '.when', '.calc-pick', '.calc', '.post-grid > *', '.contact-box', '.subscribe'];
+  const items = [];
+  groups.forEach(sel => document.querySelectorAll(sel).forEach((n, i) => {
+    if(n.getBoundingClientRect().top < innerHeight) return; // 처음부터 보이는 건 그대로 둠
+    n.classList.add('rv');
+    n.style.transitionDelay = (i % 3) * 80 + 'ms';           // 같은 줄 카드는 차례로
+    items.push(n);
+  }));
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if(!e.isIntersecting) return;
+    const n = e.target;
+    n.classList.add('in'); io.unobserve(n);
+    // 다 떠오르면 효과용 클래스를 지워 카드 원래의 hover 전환(테두리·배경)으로 돌려놓음
+    n.addEventListener('transitionend', function done(ev){
+      if(ev.target !== n || ev.propertyName !== 'transform') return;
+      n.classList.remove('rv', 'in'); n.style.transitionDelay = '';
+      n.removeEventListener('transitionend', done);
+    });
+  }), { rootMargin:'0px 0px -10% 0px' });
+  items.forEach(n => io.observe(n));
+});
+
+/* 메뉴 현재 위치 표시 — 메인 페이지에서 지금 보고 있는 구역의 메뉴를 밝게 (메뉴에 없는 구역이면 모두 끔) */
+(function(){
+  const links = [...document.querySelectorAll('nav.main a[href^="#"]')];
+  if(!links.length) return;
+  const secs = [...document.querySelectorAll('section[id]')];
+  let ticking = false;
+  function update(){
+    ticking = false;
+    const line = innerHeight * 0.4;                              // 화면 위에서 40% 지점을 지나는 구역
+    let id = secs.length ? secs[0].id : '';
+    secs.forEach(s => { if(s.getBoundingClientRect().top <= line) id = s.id; });
+    if(innerHeight + scrollY >= document.documentElement.scrollHeight - 2) id = secs[secs.length - 1].id; // 맨 아래
+    links.forEach(a => {
+      const on = a.getAttribute('href') === '#' + id;
+      a.classList.toggle('on', on);
+      if(on) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+    });
+  }
+  addEventListener('scroll', () => { if(!ticking){ ticking = true; requestAnimationFrame(update); } }, { passive:true });
+  addEventListener('resize', update);
+  update();
+})();
+
+/* 업로드 요일 — 오늘 요일에 표시를 하고 '다음 새 영상' 안내를 붙입니다 (요일 칸의 .on을 그대로 읽음) */
+(function(){
+  const box = document.querySelector('.when .days');
+  if(!box) return;
+  const days = [...box.querySelectorAll('.day')];               // 월 ~ 일
+  const today = (new Date().getDay() + 6) % 7;                   // 월=0 … 일=6
+  if(!days[today]) return;
+  days[today].classList.add('today');
+  days[today].setAttribute('aria-label', days[today].textContent + ' (오늘)');
+  let msg = '';
+  if(days[today].classList.contains('on')) msg = '오늘은 새 영상이 올라오는 날이에요';
+  else for(let k = 1; k < 7; k++){
+    const d = days[(today + k) % 7];
+    if(d.classList.contains('on')){ msg = '다음 새 영상: ' + d.textContent + '요일 · ' + (k === 1 ? '내일' : k + '일 뒤'); break; }
+  }
+  if(!msg) return;
+  const p = el('p', 'next-up', msg);
+  const where = box.parentElement.querySelector('div > p');
+  (where ? where.parentElement : box.parentElement).append(p);
+})();

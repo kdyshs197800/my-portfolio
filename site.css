@@ -93,6 +93,8 @@ nav.main a:hover,nav.main a.on{color:var(--text)}
 .days{display:flex;flex-wrap:wrap;gap:8px}
 .day{display:flex;align-items:center;justify-content:center;width:48px;height:48px;font-size:14px;font-weight:800;border-radius:10px;color:var(--text-soft);border:1px solid var(--line)}
 .day.on{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.day.today{outline:2px solid var(--gold-line);outline-offset:2px} /* site.js가 오늘 요일에 붙임 */
+.when p.next-up{font-size:14px;font-weight:700;color:var(--gold-text);margin-top:8px}
 
 /* ---------- contents ---------- */
 .post-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
@@ -228,6 +230,10 @@ nav.main a:hover,nav.main a.on{color:var(--text)}
 .calc .legend span{display:flex;align-items:center;gap:8px}
 .calc .legend i{width:8px;height:8px;border-radius:var(--r-pill)}
 .calc .out .note{font-size:12px;color:var(--text-soft)}
+
+/* ---------- 스크롤 등장 (site.js가 화면 밖 요소에만 .rv를 붙임, 동작 줄이기 설정이면 안 붙임) ---------- */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.rv.in{opacity:1;transform:none}
 
 /* ---------- footer ---------- */
 footer.site{border-top:1px solid var(--line);padding:48px 0 72px}
